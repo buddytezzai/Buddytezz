@@ -1,11 +1,11 @@
 import React from 'react';
-import StickyNavBar from '@/components/StickyNavBar.jsx';
+import ServiceHeader from '@/components/ServiceHeader.jsx';
 import Footer from '@/components/Footer.jsx';
 
 const PrivacyPolicyPage = () => {
   return (
     <div className="min-h-screen bg-[hsl(var(--background))] text-[hsl(var(--foreground))]">
-      <StickyNavBar />
+      <ServiceHeader />
       <main className="pt-32 pb-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
         <h1 className="text-4xl font-bold mb-4 font-['Outfit']">Privacy Policy – Buddy Tezz AI</h1>
         <p className="text-[hsl(var(--muted-foreground))] mb-12">Last Updated: 22 March 2026</p>
