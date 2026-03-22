@@ -1,6 +1,7 @@
 {
   "buildCommand": "npm run build",
-  "outputDirectory": "dist/apps/web",
+  "outputDirectory": "apps/web/dist",
+  "framework": "vite",
   "rewrites": [
     { "source": "/(.*)", "destination": "/" }
   ]
