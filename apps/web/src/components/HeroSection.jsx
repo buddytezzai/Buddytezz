@@ -1,88 +1,81 @@
 
-import React, { useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef, useEffect } from 'react';
+import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Sparkles } from 'lucide-react';
 
 const HeroSection = () => {
+  const containerRef = useRef(null);
   const canvasRef = useRef(null);
+  const imagesRef = useRef([]);
+  const currentFrameRef = useRef(1);
+  const frameCount = 40;
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const particles = [];
-    const particleCount = 80;
-
-    class Particle {
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
-        this.radius = Math.random() * 2 + 1;
-      }
-
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-
-        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-      }
-
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'hsl(217, 91%, 60%)';
-        ctx.fill();
-      }
+    // Preload images into memory for zero-latency scroll painting
+    const loadedImages = [];
+    for (let i = 1; i <= frameCount; i++) {
+        const img = new Image();
+        img.src = `/hero-sequence/${i}.webp`; // Changed to .webp for highest clarity
+        img.onload = () => {
+            // Paint first frame immediately as soon as it loads
+            if (i === 1) requestAnimationFrame(() => drawFrame(1));
+        };
+        loadedImages.push(img);
     }
-
-    for (let i = 0; i < particleCount; i++) {
-      particles.push(new Particle());
-    }
-
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      particles.forEach((particle, i) => {
-        particle.update();
-        particle.draw();
-
-        particles.slice(i + 1).forEach((otherParticle) => {
-          const dx = particle.x - otherParticle.x;
-          const dy = particle.y - otherParticle.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < 120) {
-            ctx.beginPath();
-            ctx.moveTo(particle.x, particle.y);
-            ctx.lineTo(otherParticle.x, otherParticle.y);
-            ctx.strokeStyle = `hsla(217, 91%, 60%, ${1 - distance / 120})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        });
-      });
-
-      requestAnimationFrame(animate);
-    }
-
-    animate();
+    imagesRef.current = loadedImages;
 
     const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+        requestAnimationFrame(() => drawFrame(currentFrameRef.current));
     };
-
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  const drawFrame = (frameIndex) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const img = imagesRef.current[frameIndex - 1];
+
+    if (!img || !img.complete) return;
+
+    // Use native device dimensions combined with devicePixelRatio mapping to ensure 
+    // canvas resolution stays razor-sharp on Retina/High-DPI displays!
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = window.innerWidth * dpr;
+    canvas.height = window.innerHeight * dpr;
+
+    // Calculate object-fit: cover equivalent bounds
+    const hRatio = canvas.width / img.width;
+    const vRatio = canvas.height / img.height;
+    const ratio = Math.max(hRatio, vRatio);
+    const centerShift_x = (canvas.width - img.width * ratio) / 2;
+    const centerShift_y = (canvas.height - img.height * ratio) / 2;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Explicitly enable high-quality smoothing for any required upscaling
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+
+    ctx.drawImage(img, 0, 0, img.width, img.height,
+                  centerShift_x, centerShift_y, img.width * ratio, img.height * ratio);
+  };
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start start', 'end end']
+  });
+
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    // Map scroll progress (0 to 1) safely to 1-40 with equal distribution
+    const calculatedIndex = Math.min(frameCount, Math.max(1, Math.floor(latest * (frameCount - 0.01)) + 1));
+    if (currentFrameRef.current !== calculatedIndex) {
+        currentFrameRef.current = calculatedIndex;
+        requestAnimationFrame(() => drawFrame(calculatedIndex));
+    }
+  });
 
   const scrollToContact = () => {
     const element = document.querySelector('#contact');
@@ -99,12 +92,19 @@ const HeroSection = () => {
   };
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[hsl(var(--background))]" aria-label="Hero Section">
-      <canvas ref={canvasRef} className="absolute inset-0 z-0" aria-hidden="true" />
-      
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[hsl(var(--background))/0.5] to-[hsl(var(--background))] z-0" aria-hidden="true" />
+    <section ref={containerRef} id="home" className="relative h-[400vh] bg-[#0A0A0A]" aria-label="Hero Section">
+      {/* Sticky wrapper pinning the content while the section continues to scroll */}
+      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col items-center justify-center">
+        
+        {/* Sequence Images loaded via high-performance HTML5 Canvas */}
+        <div className="absolute inset-0 z-0 bg-[#0A0A0A]">
+          <canvas ref={canvasRef} className="w-full h-full object-cover" aria-hidden="true" />
+        </div>
+        
+        {/* Subtle overlay gradients to ensure text remains readable without obscuring the bright robot image */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60 z-0 pointer-events-none" aria-hidden="true" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20 mt-16">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -171,18 +171,22 @@ const HeroSection = () => {
         </motion.div>
       </div>
 
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10" aria-hidden="true">
+      {/* Bounce scroll indicator to imply scrolling */}
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center opacity-70" aria-hidden="true">
+        <span className="text-white text-xs uppercase tracking-widest mb-3 font-semibold">Scroll</span>
         <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="w-6 h-10 rounded-full border-2 border-[hsl(var(--primary))] flex items-start justify-center p-2"
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          className="w-5 h-8 rounded-full border-2 border-white/40 flex items-start justify-center p-1"
         >
           <motion.div
-            animate={{ y: [0, 12, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--primary))]"
+            animate={{ y: [0, 10, 0], opacity: [1, 0.5, 1] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            className="w-1 h-2 rounded-full bg-white"
           />
         </motion.div>
+      </div>
+
       </div>
     </section>
   );
