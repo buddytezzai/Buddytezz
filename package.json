@@ -8,8 +8,10 @@
 		"start": "npm run start --prefix apps/web",
 		"lint": "npm run lint --prefix apps/web"
 	},
-	"devDependencies": {},
 	"workspaces": [
 		"apps/*"
-	]
+	],
+	"dependencies": {
+		"nodemailer": "^8.0.3"
+	}
 }

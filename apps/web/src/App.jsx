@@ -10,6 +10,7 @@ import WebsiteDevelopmentPage from '@/pages/WebsiteDevelopmentPage.jsx';
 import BrandingStrategyPage from '@/pages/BrandingStrategyPage.jsx';
 import PerformanceMarketingPage from '@/pages/PerformanceMarketingPage.jsx';
 import { RegionProvider } from '@/contexts/RegionContext.jsx';
+import { Toaster } from '@/components/ui/toaster.jsx';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path="/services/performance-marketing" element={<PerformanceMarketingPage />} />
             <Route path="*" element={<HomePage />} />
           </Routes>
+          <Toaster />
         </Router>
       </RegionProvider>
     </React.StrictMode>

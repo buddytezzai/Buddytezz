@@ -17,7 +17,8 @@ const ConsultationForm = () => {
     businessName: '',
     phone: '',
     email: '',
-    service: ''
+    service: '',
+    description: ''
   });
 
   const services = [
@@ -35,7 +36,7 @@ const ConsultationForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!formData.name || !formData.email || !formData.phone || !formData.service) {
       toast({
         title: "Missing information",
@@ -48,16 +49,21 @@ const ConsultationForm = () => {
     setIsSubmitting(true);
 
     try {
-      const submissions = JSON.parse(localStorage.getItem('consultationSubmissions') || '[]');
-      submissions.push({
-        ...formData,
-        timestamp: new Date().toISOString()
+      const response = await fetch('/api/submit-form', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
       });
-      localStorage.setItem('consultationSubmissions', JSON.stringify(submissions));
+
+      if (!response.ok) {
+        throw new Error('Failed to submit form');
+      }
 
       toast({
-        title: "Consultation request received",
-        description: "We'll contact you within 24 hours to schedule your free AI strategy call."
+        title: "Your query submitted successfully!",
+        description: "Our team will contact you shortly."
       });
 
       setFormData({
@@ -65,7 +71,8 @@ const ConsultationForm = () => {
         businessName: '',
         phone: '',
         email: '',
-        service: ''
+        service: '',
+        description: ''
       });
     } catch (error) {
       toast({
@@ -107,7 +114,7 @@ const ConsultationForm = () => {
                 type="text"
                 value={formData.name}
                 onChange={(e) => handleChange('name', e.target.value)}
-                placeholder="Maya Chen"
+                placeholder="Buddy Tezz"
                 className="bg-[hsl(var(--muted))] border-[hsl(var(--border))] text-[hsl(var(--foreground))] placeholder:text-[hsl(var(--muted-foreground))] focus-visible:ring-[hsl(var(--primary))]"
                 required
                 aria-required="true"
@@ -123,7 +130,7 @@ const ConsultationForm = () => {
                 type="text"
                 value={formData.businessName}
                 onChange={(e) => handleChange('businessName', e.target.value)}
-                placeholder="Meridian Labs"
+                placeholder="Buddy Tezz AI"
                 className="bg-[hsl(var(--muted))] border-[hsl(var(--border))] text-[hsl(var(--foreground))] placeholder:text-[hsl(var(--muted-foreground))] focus-visible:ring-[hsl(var(--primary))]"
               />
             </div>
@@ -138,7 +145,7 @@ const ConsultationForm = () => {
                   type="tel"
                   value={formData.phone}
                   onChange={(e) => handleChange('phone', e.target.value)}
-                  placeholder="+1 (555) 123-4567"
+                  placeholder="+91 1234567890"
                   className="bg-[hsl(var(--muted))] border-[hsl(var(--border))] text-[hsl(var(--foreground))] placeholder:text-[hsl(var(--muted-foreground))] focus-visible:ring-[hsl(var(--primary))]"
                   required
                   aria-required="true"
@@ -154,7 +161,7 @@ const ConsultationForm = () => {
                   type="email"
                   value={formData.email}
                   onChange={(e) => handleChange('email', e.target.value)}
-                  placeholder="maya@meridian.com"
+                  placeholder="name@gmail.com"
                   className="bg-[hsl(var(--muted))] border-[hsl(var(--border))] text-[hsl(var(--foreground))] placeholder:text-[hsl(var(--muted-foreground))] focus-visible:ring-[hsl(var(--primary))]"
                   required
                   aria-required="true"
@@ -178,6 +185,19 @@ const ConsultationForm = () => {
                   ))}
                 </SelectContent>
               </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="description" className="text-base font-medium text-[hsl(var(--foreground))]">
+                Description (Optional)
+              </Label>
+              <textarea
+                id="description"
+                value={formData.description}
+                onChange={(e) => handleChange('description', e.target.value)}
+                placeholder="Tell us a bit more about your project or goals..."
+                className="flex min-h-[100px] w-full rounded-md border bg-[hsl(var(--muted))] border-[hsl(var(--border))] px-3 py-2 text-sm text-[hsl(var(--foreground))] placeholder:text-[hsl(var(--muted-foreground))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))] disabled:cursor-not-allowed disabled:opacity-50"
+              />
             </div>
 
             <Button
