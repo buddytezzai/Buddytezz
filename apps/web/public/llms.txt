@@ -1,0 +1,8 @@
+.## Pages
+- [AI Automation Systems | Buddy Tezz AI](/aiautomation): No description available
+- [Branding & Strategy | Buddy Tezz AI](/brandingstrategy): No description available
+- [Buddy Tezz AI - Automate Your Business with AI](/home): We help brands scale with AI automation, content systems and growth strategies.
+- [Content Creation Automation | Buddy Tezz AI](/contentcreation): No description available
+- [Performance Marketing | Buddy Tezz AI](/performancemarketing): No description available
+- [Social Media Management | Buddy Tezz AI](/socialmedia): No description available
+- [Website Development | Buddy Tezz AI](/websitedevelopment): No description available
