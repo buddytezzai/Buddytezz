@@ -22,7 +22,7 @@ const Footer = () => {
     { label: 'Services', href: '#services' },
     { label: 'Results', href: '#results' },
     { label: 'ROI Calculator', href: '#roi-calculator' },
-    { label: 'About', href: '#about' },
+    { label: 'About', href: '/about' },
     { label: 'Contact', href: '#contact' }
   ];
 
@@ -32,16 +32,16 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-3 gap-12 mb-12">
           <div className="space-y-6">
-            <div className="flex items-center gap-3">
-              <img 
-                src="https://horizons-cdn.hostinger.com/e8899cff-47c0-4fa0-a3d5-02b5278d01c4/f9785657bb3b62a1888faa1e5159e176.png" 
-                alt="Buddy Tezz AI Logo" 
-                className="h-16 w-auto md:h-20 object-contain"
-              />
-              <span className="text-xl md:text-2xl font-bold text-white font-['Outfit'] whitespace-nowrap tracking-tight">
-                Buddy Tezz AI
-              </span>
-            </div>
+              <Link to="/" className="flex items-center gap-3">
+                <img 
+                  src="https://horizons-cdn.hostinger.com/e8899cff-47c0-4fa0-a3d5-02b5278d01c4/f9785657bb3b62a1888faa1e5159e176.png" 
+                  alt="Buddy Tezz AI Logo" 
+                  className="h-16 w-auto md:h-20 object-contain hover:scale-105 transition-transform"
+                />
+                <span className="text-xl md:text-2xl font-bold text-white font-['Outfit'] whitespace-nowrap tracking-tight">
+                  Buddy Tezz AI
+                </span>
+              </Link>
             <p className="text-base text-[hsl(var(--muted-foreground))] leading-relaxed max-w-sm">
               AI-powered business automation and growth strategies for modern brands.
             </p>
@@ -51,13 +51,23 @@ const Footer = () => {
             <p className="font-semibold text-lg text-[hsl(var(--foreground))] mb-6">Quick links</p>
             <nav className="space-y-3" aria-label="Footer Navigation">
               {quickLinks.map((link) => (
-                <button
-                  key={link.href}
-                  onClick={() => scrollToSection(link.href)}
-                  className="block text-base text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))] rounded px-1 -ml-1"
-                >
-                  {link.label}
-                </button>
+                link.href.startsWith('/') ? (
+                  <Link
+                    key={link.href}
+                    to={link.href}
+                    className="block text-base text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))] rounded px-1 -ml-1"
+                  >
+                    {link.label}
+                  </Link>
+                ) : (
+                  <button
+                    key={link.href}
+                    onClick={() => scrollToSection(link.href)}
+                    className="block text-base text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))] rounded px-1 -ml-1"
+                  >
+                    {link.label}
+                  </button>
+                )
               ))}
             </nav>
           </div>

@@ -2,16 +2,19 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const StickyNavBar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const menuItems = [
     { label: 'Services', href: '#services' },
     { label: 'Results', href: '#results' },
     { label: 'ROI Calculator', href: '#roi-calculator' },
-    { label: 'About', href: '#about' },
+    { label: 'About', href: '/about' },
     { label: 'Contact', href: '#contact' }
   ];
 
@@ -25,10 +28,29 @@ const StickyNavBar = () => {
   }, []);
 
   const scrollToSection = (href) => {
+    setIsMobileMenuOpen(false);
+    
+    // If it's an absolute path, navigate there perfectly using React Router
+    if (href.startsWith('/')) {
+      navigate(href);
+      return;
+    }
+
+    // Otherwise scroll smoothly
     const element = document.querySelector(href);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
-      setIsMobileMenuOpen(false);
+    } else {
+      // If we are on a subpage and click a hash link, go to home page first
+      navigate('/');
+    }
+  };
+
+  const handleLogoClick = () => {
+    if (location.pathname !== '/') {
+      navigate('/');
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
@@ -47,7 +69,7 @@ const StickyNavBar = () => {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             className="flex items-center gap-3 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))] rounded-lg"
-            onClick={() => scrollToSection('#home')}
+            onClick={handleLogoClick}
             aria-label="Go to Home"
           >
             <img 
