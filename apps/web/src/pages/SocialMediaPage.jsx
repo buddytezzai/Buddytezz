@@ -5,7 +5,8 @@ import { motion } from 'framer-motion';
 import { Share2, Users, Heart, Eye } from 'lucide-react';
 import ServiceHeader from '@/components/ServiceHeader.jsx';
 import ServiceOverview from '@/components/ServiceOverview.jsx';
-import PortfolioGrid from '@/components/PortfolioGrid.jsx';
+import VideoPortfolio from '@/components/VideoPortfolio.jsx';
+import BrandSlider from '@/components/BrandSlider.jsx';
 import SocialMediaROICalculator from '@/components/SocialMediaROICalculator.jsx';
 import ServiceCTA from '@/components/ServiceCTA.jsx';
 import Footer from '@/components/Footer.jsx';
@@ -71,7 +72,8 @@ const SocialMediaPage = () => {
       </section>
 
 
-      <PortfolioGrid items={portfolioItems} />
+      <VideoPortfolio />
+      <BrandSlider />
 
       <SocialMediaROICalculator />
 
