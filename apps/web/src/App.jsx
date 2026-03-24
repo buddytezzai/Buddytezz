@@ -14,29 +14,32 @@ import TermsOfServicePage from '@/pages/TermsOfServicePage.jsx';
 import AboutPage from '@/pages/AboutPage.jsx';
 import { RegionProvider } from '@/contexts/RegionContext.jsx';
 import { Toaster } from '@/components/ui/toaster.jsx';
+import SmoothScroll from '@/components/SmoothScroll.jsx';
 
 function App() {
   return (
     <React.StrictMode>
-      <RegionProvider>
-        <Router>
-          <ScrollToTop />
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/services/ai-automation" element={<AIAutomationPage />} />
-            <Route path="/services/social-media" element={<SocialMediaPage />} />
-            <Route path="/services/content-creation" element={<ContentCreationPage />} />
-            <Route path="/services/website-development" element={<WebsiteDevelopmentPage />} />
-            <Route path="/services/branding-strategy" element={<BrandingStrategyPage />} />
-            <Route path="/services/performance-marketing" element={<PerformanceMarketingPage />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-            <Route path="/terms-of-service" element={<TermsOfServicePage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="*" element={<HomePage />} />
-          </Routes>
-          <Toaster />
-        </Router>
-      </RegionProvider>
+      <SmoothScroll>
+        <RegionProvider>
+          <Router>
+            <ScrollToTop />
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/services/ai-automation" element={<AIAutomationPage />} />
+              <Route path="/services/social-media" element={<SocialMediaPage />} />
+              <Route path="/services/content-creation" element={<ContentCreationPage />} />
+              <Route path="/services/website-development" element={<WebsiteDevelopmentPage />} />
+              <Route path="/services/branding-strategy" element={<BrandingStrategyPage />} />
+              <Route path="/services/performance-marketing" element={<PerformanceMarketingPage />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+              <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="*" element={<HomePage />} />
+            </Routes>
+            <Toaster />
+          </Router>
+        </RegionProvider>
+      </SmoothScroll>
     </React.StrictMode>
   );
 }
