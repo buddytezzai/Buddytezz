@@ -82,26 +82,31 @@ const BrandingStrategyPage = () => {
         subtitle="Crafting unique identities that capture attention and command respect across all mediums."
         items={[
           {
-            image: 'https://images.unsplash.com/photo-1542713133-722522731057?auto=format&fit=crop&q=80&w=2000',
+            type: 'image',
+            image: 'https://images.unsplash.com/photo-1536412597336-ade7b523ecac?auto=format&fit=crop&q=80&w=2000',
             title: 'OOH Branding',
             description: 'High-impact offline campaigns for mass visibility.'
           },
           {
+            type: 'image',
             image: 'https://images.unsplash.com/photo-1481487196290-c152efe083f5?auto=format&fit=crop&q=80&w=2000',
             title: 'Digital Branding',
             description: 'Consistent identity across all digital platforms.'
           },
           {
+            type: 'image',
             image: 'https://images.unsplash.com/photo-1557838923-2985c318be48?auto=format&fit=crop&q=80&w=2000',
             title: 'Influencer Marketing',
             description: 'Strategic collaborations for audience trust.'
           },
           {
+            type: 'image',
             image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80&w=2000',
             title: 'Social Media Branding',
             description: 'A cohesive visual language for your social presence.'
           },
           {
+            type: 'image',
             image: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=2000',
             title: 'Content Marketing',
             description: 'Strategic content that positions you as an industry leader.'
