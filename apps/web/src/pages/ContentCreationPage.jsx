@@ -4,9 +4,7 @@ import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
 import { FileText, Video, PenTool, Clock, DollarSign, Zap } from 'lucide-react';
 import ServiceHeader from '@/components/ServiceHeader.jsx';
-import VideoPortfolio from '@/components/VideoPortfolio.jsx';
 import ImageShowcase from '@/components/ImageShowcase.jsx';
-import BrandSlider from '@/components/BrandSlider.jsx';
 import ServiceROICalculator from '@/components/ServiceROICalculator.jsx';
 import ServiceCTA from '@/components/ServiceCTA.jsx';
 import Footer from '@/components/Footer.jsx';
@@ -80,31 +78,24 @@ const ContentCreationPage = () => {
         </motion.div>
       </section>
 
-      <VideoPortfolio 
+      <ImageShowcase 
         title="✨ Creative AI Showcase"
         subtitle="Experience the future of content production with AI-driven visuals and avatars."
         items={[
           {
+            type: 'video',
             id: 'tvmjI5nVgIQ',
             title: 'AI Avatar / Clone Video Creation',
             description: 'Hyper-realistic digital clones that deliver your message with perfect precision and scale.'
-          }
-        ]}
-      />
-
-      <ImageShowcase 
-        title="Content Intelligence"
-        subtitle="Data-driven content strategies powered by advanced AI research agents."
-        items={[
+          },
           {
+            type: 'image',
             image: '/images/content_workflow.png',
             title: 'Niche Content Research Using AI & AI Agents',
             description: 'Automated deep-dives into trending topics and audience behavior for maximum reach.'
           }
         ]}
       />
-
-      <BrandSlider />
 
       <ServiceROICalculator 
         title="Content Engine ROI"

@@ -4,9 +4,7 @@ import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
 import { Globe, Code, Layout, MousePointerClick, Zap } from 'lucide-react';
 import ServiceHeader from '@/components/ServiceHeader.jsx';
-import VideoPortfolio from '@/components/VideoPortfolio.jsx';
 import ImageShowcase from '@/components/ImageShowcase.jsx';
-import BrandSlider from '@/components/BrandSlider.jsx';
 import ServiceROICalculator from '@/components/ServiceROICalculator.jsx';
 import ServiceCTA from '@/components/ServiceCTA.jsx';
 import Footer from '@/components/Footer.jsx';
@@ -101,9 +99,6 @@ const WebsiteDevelopmentPage = () => {
           }
         ]}
       />
-
-      <VideoPortfolio />
-      <BrandSlider />
 
       <ServiceROICalculator 
         title="Website Redesign ROI"

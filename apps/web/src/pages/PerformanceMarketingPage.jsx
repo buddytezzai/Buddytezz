@@ -4,9 +4,7 @@ import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
 import { TrendingUp, BarChart3, Target, DollarSign, Zap } from 'lucide-react';
 import ServiceHeader from '@/components/ServiceHeader.jsx';
-import VideoPortfolio from '@/components/VideoPortfolio.jsx';
 import ImageShowcase from '@/components/ImageShowcase.jsx';
-import BrandSlider from '@/components/BrandSlider.jsx';
 import ServiceROICalculator from '@/components/ServiceROICalculator.jsx';
 import ServiceCTA from '@/components/ServiceCTA.jsx';
 import Footer from '@/components/Footer.jsx';
@@ -101,9 +99,6 @@ const PerformanceMarketingPage = () => {
           }
         ]}
       />
-
-      <VideoPortfolio />
-      <BrandSlider />
 
       <ServiceROICalculator 
         title="Ad Spend ROI Predictor"

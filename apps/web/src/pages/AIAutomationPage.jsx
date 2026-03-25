@@ -4,9 +4,7 @@ import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
 import { Zap, Cpu, Settings, Target } from 'lucide-react';
 import ServiceHeader from '@/components/ServiceHeader.jsx';
-import VideoPortfolio from '@/components/VideoPortfolio.jsx';
 import ImageShowcase from '@/components/ImageShowcase.jsx';
-import BrandSlider from '@/components/BrandSlider.jsx';
 import ServiceROICalculator from '@/components/ServiceROICalculator.jsx';
 import ServiceCTA from '@/components/ServiceCTA.jsx';
 import Footer from '@/components/Footer.jsx';
@@ -85,36 +83,30 @@ const AIAutomationPage = () => {
         </motion.div>
       </section>
 
-      <VideoPortfolio 
-        title="🤖 Automation in Action"
+      <ImageShowcase 
+        title="🤖 AI automation showcase"
         subtitle="See how we leverage AI and low-code tools to eliminate manual work and boost efficiency."
         items={[
           {
+            type: 'video',
             id: 'AYJiF8v3da4',
-            title: 'Automate WhatsApp Orders with n8n & Google Sheets',
+            title: 'Automate WhatsApp Orders with n8n Google Sheets',
             description: 'A seamless end-to-end order management system that handles customers on WhatsApp automatically.'
           },
           {
+            type: 'video',
             id: 'QO5iuAmbAe4',
             title: 'Content Posting Automation',
             description: 'Automated distribution systems that keep your social presence active 24/7 without manual effort.'
-          }
-        ]}
-      />
-
-      <ImageShowcase 
-        title="Strategic AI Implementation"
-        subtitle="We don't just provide tools; we empower your workforce to lead in the AI era."
-        items={[
+          },
           {
+            type: 'image',
             image: '/images/ai_automation_workflow.png',
             title: 'Helping Your Existing Team to Use AI Properly',
             description: 'Deep-dive training and workflow integration for sustainable business growth.'
           }
         ]}
       />
-
-      <BrandSlider />
 
       <ServiceROICalculator 
         title="AI Automation ROI Calculator"
