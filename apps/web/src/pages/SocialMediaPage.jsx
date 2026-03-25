@@ -4,7 +4,6 @@ import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
 import { Share2, Users, Heart, Eye } from 'lucide-react';
 import ServiceHeader from '@/components/ServiceHeader.jsx';
-import ServiceOverview from '@/components/ServiceOverview.jsx';
 import VideoPortfolio from '@/components/VideoPortfolio.jsx';
 import BrandSlider from '@/components/BrandSlider.jsx';
 import SocialMediaROICalculator from '@/components/SocialMediaROICalculator.jsx';
@@ -17,18 +16,6 @@ const SocialMediaPage = () => {
   const heroRef = useRef(null);
   const y = useParallax(heroRef, 150);
 
-  const portfolioItems = [
-    {
-      title: "Viral TikTok Campaign",
-      description: "Grew a lifestyle brand from 0 to 100k followers in 2 months.",
-      image: "https://images.unsplash.com/photo-1686061594225-3e92c0cd51b0?auto=format&fit=crop&q=80&w=800"
-    },
-    {
-      title: "B2B LinkedIn Strategy",
-      description: "Generated 50+ high-ticket leads through organic content.",
-      image: "https://images.unsplash.com/photo-1686061594225-3e92c0cd51b0?auto=format&fit=crop&q=80&w=800"
-    }
-  ];
 
 
 
