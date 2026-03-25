@@ -25,11 +25,12 @@ const PortfolioGrid = ({ items }) => {
               <div className="glass-card rounded-2xl overflow-hidden h-full flex flex-col border-[hsl(var(--border))] hover:border-[hsl(var(--primary))]/50 transition-colors duration-300">
                 <div className="relative h-48 overflow-hidden">
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-300 z-10" />
-                  <img 
-                    src={item.image} 
-                    alt={item.title} 
-                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                  />
+                    <img 
+                      src={item.image} 
+                      alt={item.title} 
+                      loading="lazy"
+                      className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                    />
                 </div>
                 <div className="p-6 flex-1 flex flex-col">
                   <div className="flex justify-between items-start mb-4">

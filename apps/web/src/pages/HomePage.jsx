@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 import Preloader from '@/components/Preloader.jsx';
 import StickyNavBar from '@/components/StickyNavBar.jsx';
 import HeroSection from '@/components/HeroSection.jsx';
@@ -18,6 +19,19 @@ import { Button } from '@/components/ui/button';
 
 const HomePage = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (!isLoading && location.state?.scrollTo) {
+        const target = location.state.scrollTo;
+        setTimeout(() => {
+            const element = document.getElementById(target);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }, 100); // Small delay to ensure DOM is ready
+    }
+  }, [isLoading, location.state]);
 
   const services = [
     {
@@ -86,7 +100,7 @@ const HomePage = () => {
     }
   ];
 
-  const openWhatsApp = () => window.open('https://wa.me/1234567890', '_blank');
+
 
   if (isLoading) {
     return <Preloader onComplete={() => setIsLoading(false)} />;
@@ -112,6 +126,12 @@ const HomePage = () => {
               viewport={{ once: true }}
               className="text-center mb-16"
             >
+                <img
+                  src="https://horizons-cdn.hostinger.com/e8899cff-47c0-4fa0-a3d5-02b5278d01c4/f9785657bb3b62a1888faa1e5159e176.png"
+                  alt="Buddy Tezz AI Logo"
+                  loading="lazy"
+                  className="h-16 w-auto md:h-20 object-contain group-hover:scale-105 transition-transform"
+                />
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Our services</h2>
               <p className="text-lg text-[hsl(var(--muted-foreground))] max-w-2xl mx-auto">
                 Comprehensive AI-powered solutions to scale your business

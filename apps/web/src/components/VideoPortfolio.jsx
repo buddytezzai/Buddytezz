@@ -120,6 +120,7 @@ const VideoCard = ({ video, isActive, onHover, onLeave }) => {
         <img
           src={`https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`}
           alt={video.title}
+          loading="lazy"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-300" />

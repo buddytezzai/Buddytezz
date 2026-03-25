@@ -10,44 +10,44 @@ const HeroSection = () => {
   const imagesRef = useRef([]);
   const targetFrameRef = useRef(1);
   const interpolatedFrameRef = useRef(1);
-  const [isLoaded, setIsLoaded] = useState(false);
-  
-  // Upgrade to 210 frames for cinematic quality
-  const frameCount = 210;
-  // Easing factor (lower = smoother/more weight, higher = more responsive)
+  // Dynamic frame count: 210 for desktop, 105 for mobile to double performance
+  const [frameCount, setFrameCount] = useState(window.innerWidth < 768 ? 105 : 210);
   const easing = 0.08; 
 
   useEffect(() => {
     const isMobile = window.innerWidth < 768;
-    const loadBatchSize = 10; // Load in small batches to keep UI responsive
-    let loadedCount = 0;
+    const currentFrameCount = isMobile ? 105 : 210;
+    setFrameCount(currentFrameCount);
 
     const preloadImages = async () => {
-        const loadedImages = [];
-        for (let i = 1; i <= frameCount; i++) {
-            // Mobile Optimization: On mobile, we can skip every 2nd frame to save memory/bandwidth
-            // if you have a huge number of frames. For 210, we'll try to load all but monitor performance.
-            const img = new Image();
-            img.src = `/hero-sequence/${i}.webp`;
-            
-            if (i === 1) {
-                img.onload = () => {
-                    imagesRef.current[0] = img;
-                    requestAnimationFrame(() => drawFrame(1));
-                };
-            }
-            loadedImages.push(img);
-        }
-        imagesRef.current = loadedImages;
+        const loadedImages = new Array(currentFrameCount);
         
-        // Track overall loading for a potential progress bar or "ready" state
-        let complete = 0;
-        loadedImages.forEach(img => {
+        // Priority 1: Load first 30 frames for immediate interaction
+        const priorityFrames = Array.from({ length: Math.min(30, currentFrameCount) }, (_, i) => i + 1);
+        
+        await Promise.all(priorityFrames.map(i => {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.src = `/hero-sequence/${isMobile ? i * 2 : i}.webp`;
+                img.onload = () => {
+                    loadedImages[i - 1] = img;
+                    if (i === 1) requestAnimationFrame(() => drawFrame(1));
+                    resolve();
+                };
+            });
+        }));
+
+        imagesRef.current = loadedImages;
+        setIsLoaded(true); // Allow scrolling now
+
+        // Priority 2: Load the rest in background without blocking
+        for (let i = 31; i <= currentFrameCount; i++) {
+            const img = new Image();
+            img.src = `/hero-sequence/${isMobile ? i * 2 : i}.webp`;
             img.onload = () => {
-                complete++;
-                if (complete === frameCount) setIsLoaded(true);
+                imagesRef.current[i - 1] = img;
             };
-        });
+        }
     };
 
     preloadImages();
