@@ -11,11 +11,11 @@ const HeroSection = () => {
   const targetFrameRef = useRef(1);
   const interpolatedFrameRef = useRef(1);
   const [isLoaded, setIsLoaded] = useState(false);
-  
-  // Upgrade to 152 frames for new sequence
-  const frameCount = 152;
+
+  // Upgrade to 211 frames for new sequence (0-210)
+  const frameCount = 211;
   // Easing factor (lower = smoother/more weight, higher = more responsive)
-  const easing = 0.08; 
+  const easing = 0.08;
 
   useEffect(() => {
     const isMobile = window.innerWidth < 768;
@@ -23,31 +23,31 @@ const HeroSection = () => {
     let loadedCount = 0;
 
     const preloadImages = async () => {
-        const loadedImages = [];
-        for (let i = 0; i < frameCount; i++) {
-            // Mobile Optimization: On mobile, we can skip every 2nd frame to save memory/bandwidth
-            // if you have a huge number of frames. For 152, we'll try to load all but monitor performance.
-            const img = new Image();
-            img.src = `/hero-sequence/${i}.wepg.png`;
-            
-            if (i === 0) {
-                img.onload = () => {
-                    imagesRef.current[0] = img;
-                    requestAnimationFrame(() => drawFrame(1));
-                };
-            }
-            loadedImages.push(img);
+      const loadedImages = [];
+      for (let i = 0; i < frameCount; i++) {
+        // Mobile Optimization: On mobile, we can skip every 2nd frame to save memory/bandwidth
+        // if you have a huge number of frames. For 211, we'll try to load all but monitor performance.
+        const img = new Image();
+        img.src = `/hero-sequence/${i}.webp`;
+
+        if (i === 0) {
+          img.onload = () => {
+            imagesRef.current[0] = img;
+            requestAnimationFrame(() => drawFrame(1));
+          };
         }
-        imagesRef.current = loadedImages;
-        
-        // Track overall loading for a potential progress bar or "ready" state
-        let complete = 0;
-        loadedImages.forEach(img => {
-            img.onload = () => {
-                complete++;
-                if (complete === frameCount) setIsLoaded(true);
-            };
-        });
+        loadedImages.push(img);
+      }
+      imagesRef.current = loadedImages;
+
+      // Track overall loading for a potential progress bar or "ready" state
+      let complete = 0;
+      loadedImages.forEach(img => {
+        img.onload = () => {
+          complete++;
+          if (complete === frameCount) setIsLoaded(true);
+        };
+      });
     };
 
     preloadImages();
@@ -56,26 +56,26 @@ const HeroSection = () => {
     // We don't just jump to a frame; we "lerp" toward the target frame index.
     let rafId;
     const renderLoop = () => {
-        const distance = targetFrameRef.current - interpolatedFrameRef.current;
-        
-        // Only redraw if we haven't reached the target
-        if (Math.abs(distance) > 0.01) {
-            interpolatedFrameRef.current += distance * easing;
-            drawFrame(Math.round(interpolatedFrameRef.current));
-        }
-        
-        rafId = requestAnimationFrame(renderLoop);
+      const distance = targetFrameRef.current - interpolatedFrameRef.current;
+
+      // Only redraw if we haven't reached the target
+      if (Math.abs(distance) > 0.01) {
+        interpolatedFrameRef.current += distance * easing;
+        drawFrame(Math.round(interpolatedFrameRef.current));
+      }
+
+      rafId = requestAnimationFrame(renderLoop);
     };
     rafId = requestAnimationFrame(renderLoop);
 
     const handleResize = () => {
-        requestAnimationFrame(() => drawFrame(Math.round(interpolatedFrameRef.current)));
+      requestAnimationFrame(() => drawFrame(Math.round(interpolatedFrameRef.current)));
     };
-    
+
     window.addEventListener('resize', handleResize);
     return () => {
-        window.removeEventListener('resize', handleResize);
-        cancelAnimationFrame(rafId);
+      window.removeEventListener('resize', handleResize);
+      cancelAnimationFrame(rafId);
     };
   }, []);
 
@@ -83,7 +83,7 @@ const HeroSection = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
-    
+
     // Safety check for array bounds
     const idx = Math.max(0, Math.min(frameCount - 1, frameIndex - 1));
     const img = imagesRef.current[idx];
@@ -105,7 +105,7 @@ const HeroSection = () => {
     ctx.imageSmoothingQuality = 'high';
 
     ctx.drawImage(img, 0, 0, img.width, img.height,
-                  centerShift_x, centerShift_y, img.width * ratio, img.height * ratio);
+      centerShift_x, centerShift_y, img.width * ratio, img.height * ratio);
   };
 
   const { scrollYProgress } = useScroll({
@@ -133,12 +133,12 @@ const HeroSection = () => {
     <section ref={containerRef} id="home" className="relative h-[600vh] bg-[#0A0A0A]" aria-label="Hero Section">
       {/* Sticky wrapper */}
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col items-center justify-center">
-        
+
         {/* Sequence Images */}
         <div className="absolute inset-0 z-0 bg-[#0A0A0A]">
           <canvas ref={canvasRef} className="w-full h-full object-cover" aria-hidden="true" />
         </div>
-        
+
         {/* Gradients */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/50 z-0 pointer-events-none" aria-hidden="true" />
 
