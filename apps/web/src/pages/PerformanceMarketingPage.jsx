@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { TrendingUp, BarChart3, Target, DollarSign, Zap } from 'lucide-react';
 import ServiceHeader from '@/components/ServiceHeader.jsx';
 import VideoPortfolio from '@/components/VideoPortfolio.jsx';
+import ImageShowcase from '@/components/ImageShowcase.jsx';
 import BrandSlider from '@/components/BrandSlider.jsx';
 import ServiceROICalculator from '@/components/ServiceROICalculator.jsx';
 import ServiceCTA from '@/components/ServiceCTA.jsx';
@@ -78,6 +79,28 @@ const PerformanceMarketingPage = () => {
           </p>
         </motion.div>
       </section>
+
+      <ImageShowcase 
+        title="📈 Performance Showcases"
+        subtitle="Data-driven growth systems designed for high-performance scaling and customer retention."
+        items={[
+          {
+            image: '/images/ecommerce_funnel.png',
+            title: 'High-converting E-commerce Funnel',
+            description: 'Optimized multi-stage funnels designed to maximize ROAS and average order value.'
+          },
+          {
+            image: '/images/app_growth.png',
+            title: 'App Install Growth System',
+            description: 'Scalable user acquisition strategies for mobile apps across Meta, Google, and TikTok.'
+          },
+          {
+            image: '/images/retention_flow.png',
+            title: 'Retention & Lifecycle Marketing Flow',
+            description: 'Automated loyalty and engagement systems that turn one-time buyers into lifelong fans.'
+          }
+        ]}
+      />
 
       <VideoPortfolio />
       <BrandSlider />

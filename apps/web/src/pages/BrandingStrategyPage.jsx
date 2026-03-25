@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Palette, Target, Sparkles, Award, Users, Zap } from 'lucide-react';
 import ServiceHeader from '@/components/ServiceHeader.jsx';
 import VideoPortfolio from '@/components/VideoPortfolio.jsx';
+import ImageShowcase from '@/components/ImageShowcase.jsx';
 import BrandSlider from '@/components/BrandSlider.jsx';
 import ServiceROICalculator from '@/components/ServiceROICalculator.jsx';
 import ServiceCTA from '@/components/ServiceCTA.jsx';
@@ -77,6 +78,38 @@ const BrandingStrategyPage = () => {
           </p>
         </motion.div>
       </section>
+
+      <ImageShowcase 
+        title="💎 Branding Showcases"
+        subtitle="Crafting unique identities that capture attention and command respect across all mediums."
+        items={[
+          {
+            image: 'https://images.unsplash.com/photo-1542713133-722522731057?auto=format&fit=crop&q=80&w=2000',
+            title: 'OOH Branding',
+            description: 'High-impact offline campaigns for mass visibility.'
+          },
+          {
+            image: 'https://images.unsplash.com/photo-1481487196290-c152efe083f5?auto=format&fit=crop&q=80&w=2000',
+            title: 'Digital Branding',
+            description: 'Consistent identity across all digital platforms.'
+          },
+          {
+            image: 'https://images.unsplash.com/photo-1557838923-2985c318be48?auto=format&fit=crop&q=80&w=2000',
+            title: 'Influencer Marketing',
+            description: 'Strategic collaborations for audience trust.'
+          },
+          {
+            image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80&w=2000',
+            title: 'Social Media Branding',
+            description: 'A cohesive visual language for your social presence.'
+          },
+          {
+            image: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=2000',
+            title: 'Content Marketing',
+            description: 'Strategic content that positions you as an industry leader.'
+          }
+        ]}
+      />
 
       <VideoPortfolio />
       <BrandSlider />

@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Globe, Code, Layout, MousePointerClick, Zap } from 'lucide-react';
 import ServiceHeader from '@/components/ServiceHeader.jsx';
 import VideoPortfolio from '@/components/VideoPortfolio.jsx';
+import ImageShowcase from '@/components/ImageShowcase.jsx';
 import BrandSlider from '@/components/BrandSlider.jsx';
 import ServiceROICalculator from '@/components/ServiceROICalculator.jsx';
 import ServiceCTA from '@/components/ServiceCTA.jsx';
@@ -78,6 +79,28 @@ const WebsiteDevelopmentPage = () => {
           </p>
         </motion.div>
       </section>
+
+      <ImageShowcase 
+        title="🌐 Website Showcases"
+        subtitle="High-performance, conversion-focused websites tailored for different business needs."
+        items={[
+          {
+            image: '/images/ecommerce_mockup.png',
+            title: 'E-commerce Website',
+            description: 'Built for conversions and seamless checkout experience.'
+          },
+          {
+            image: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?auto=format&fit=crop&q=80&w=2000',
+            title: 'Portfolio / Personal Brand Website',
+            description: 'Clean portfolio design focused on personal branding.'
+          },
+          {
+            image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=2000',
+            title: 'Service-Based Business Website',
+            description: 'Lead-focused service website with strong CTA structure.'
+          }
+        ]}
+      />
 
       <VideoPortfolio />
       <BrandSlider />

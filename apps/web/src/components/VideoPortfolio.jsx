@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const videos = [
+const DEFAULT_VIDEOS = [
   {
     id: 'iwg3oRZ-piw',
     title: 'Shlloka',
@@ -75,11 +75,6 @@ const VideoCard = ({ video, isActive, onHover, onLeave }) => {
     if (window.YT && window.YT.Player) {
       initPlayer();
     } else {
-      window.onYouTubeIframeAPIReady = () => {
-        // This is tricky if multiple cards are initializing
-        // A better approach is to check periodically or use a central manager
-      };
-      
       // Fallback for multiple initializations
       const checkYT = setInterval(() => {
         if (window.YT && window.YT.Player) {
@@ -136,7 +131,7 @@ const VideoCard = ({ video, isActive, onHover, onLeave }) => {
         <p className="text-sm text-gray-300 line-clamp-2">{video.description}</p>
       </div>
 
-      {/* Playing Overlay (Optional subtle indicator) */}
+      {/* Playing Overlay */}
       <AnimatePresence>
         {isActive && (
           <motion.div
@@ -151,7 +146,11 @@ const VideoCard = ({ video, isActive, onHover, onLeave }) => {
   );
 };
 
-const VideoPortfolio = () => {
+const VideoPortfolio = ({ 
+  items = DEFAULT_VIDEOS, 
+  title = "🎥 Video Showcase", 
+  subtitle = "Explore our curated portfolio of viral content and strategic narrative building." 
+}) => {
   const [activeVideo, setActiveVideo] = useState(null);
 
   return (
@@ -167,7 +166,7 @@ const VideoPortfolio = () => {
             viewport={{ once: true }}
             className="text-4xl md:text-5xl font-bold text-white mb-6"
           >
-            🎥 Video Showcase
+            {title}
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -176,12 +175,12 @@ const VideoPortfolio = () => {
             transition={{ delay: 0.1 }}
             className="text-[hsl(var(--muted-foreground))] max-w-2xl mx-auto"
           >
-            Explore our curated portfolio of viral content and strategic narrative building.
+            {subtitle}
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {videos.map((video) => (
+        <div className={`grid grid-cols-1 md:grid-cols-2 ${items.length >= 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-2 max-w-4xl mx-auto'} gap-8`}>
+          {items.map((video) => (
             <VideoCard
               key={video.id}
               video={video}
