@@ -2,31 +2,20 @@
 import React, { useRef } from 'react';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
-import { Globe, Code, Layout, MousePointerClick } from 'lucide-react';
+import { Globe, Code, Layout, MousePointerClick, Zap } from 'lucide-react';
 import ServiceHeader from '@/components/ServiceHeader.jsx';
-import ServiceOverview from '@/components/ServiceOverview.jsx';
-import PortfolioGrid from '@/components/PortfolioGrid.jsx';
+import VideoPortfolio from '@/components/VideoPortfolio.jsx';
+import BrandSlider from '@/components/BrandSlider.jsx';
 import ServiceROICalculator from '@/components/ServiceROICalculator.jsx';
 import ServiceCTA from '@/components/ServiceCTA.jsx';
 import Footer from '@/components/Footer.jsx';
 import { useParallax } from '@/hooks/useParallax.js';
+import { floatingAnimation } from '@/lib/animations.js';
 
 const WebsiteDevelopmentPage = () => {
   const heroRef = useRef(null);
   const y = useParallax(heroRef, 150);
 
-  const portfolioItems = [
-    {
-      title: "E-Commerce Platform",
-      description: "Custom headless Shopify build increasing conversions by 45%.",
-      image: "https://images.unsplash.com/photo-1593720213428-28a5b9e94613?auto=format&fit=crop&q=80&w=800"
-    },
-    {
-      title: "SaaS Marketing Site",
-      description: "High-performance React site with sub-second load times.",
-      image: "https://images.unsplash.com/photo-1593720213428-28a5b9e94613?auto=format&fit=crop&q=80&w=800"
-    }
-  ];
 
   const calcInputs = [
     { id: 'visitors', label: 'Monthly Visitors', min: 1000, max: 500000, step: 1000, default: 50000, prefix: '', suffix: '' },
@@ -57,22 +46,27 @@ const WebsiteDevelopmentPage = () => {
       <ServiceHeader />
       
       <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0 bg-[hsl(var(--background))]" />
+        <div className="absolute inset-0 z-0 bg-gradient-to-br from-[hsl(var(--background))] via-[hsl(var(--muted))] to-[hsl(var(--background))]" />
         
-        {/* Code Snippet Background */}
-        <div className="absolute inset-0 z-10 opacity-10 font-mono text-sm text-[hsl(var(--primary))] p-8 overflow-hidden whitespace-pre">
-          {`function optimizeConversion(traffic) {
-  const speed = measureLoadTime();
-  if (speed > 1000) return optimizeAssets();
-  return traffic.map(user => convert(user));
-}
-
-const App = () => (
-  <ThemeProvider>
-    <Hero />
-    <Features />
-  </ThemeProvider>
-);`}
+        {/* Floating Icons */}
+        <div className="absolute inset-0 z-10 pointer-events-none">
+          {[Globe, Code, Layout, MousePointerClick].map((Icon, i) => (
+            <motion.div
+              key={i}
+              variants={floatingAnimation}
+              initial="initial"
+              animate="animate"
+              style={{
+                position: 'absolute',
+                top: `${20 + Math.random() * 60}%`,
+                left: `${10 + Math.random() * 80}%`,
+                animationDelay: `${i * 0.5}s`
+              }}
+              className="p-4 glass-card rounded-2xl text-[hsl(var(--primary))] opacity-50"
+            >
+              <Icon size={32} />
+            </motion.div>
+          ))}
         </div>
 
         <motion.div style={{ y }} className="relative z-20 text-center px-4 max-w-5xl mx-auto">
@@ -85,13 +79,8 @@ const App = () => (
         </motion.div>
       </section>
 
-      <ServiceOverview 
-        icon={Globe}
-        headline="Your website is your best salesperson."
-        description="We build modern web applications using React and Next.js that load instantly, rank higher on Google, and guide users seamlessly toward conversion."
-      />
-
-      <PortfolioGrid items={portfolioItems} />
+      <VideoPortfolio />
+      <BrandSlider />
 
       <ServiceROICalculator 
         title="Website Redesign ROI"

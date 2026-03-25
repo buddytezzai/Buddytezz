@@ -2,31 +2,20 @@
 import React, { useRef } from 'react';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
-import { FileText, Video, PenTool, Clock, DollarSign } from 'lucide-react';
+import { FileText, Video, PenTool, Clock, DollarSign, Zap } from 'lucide-react';
 import ServiceHeader from '@/components/ServiceHeader.jsx';
-import ServiceOverview from '@/components/ServiceOverview.jsx';
-import PortfolioGrid from '@/components/PortfolioGrid.jsx';
+import VideoPortfolio from '@/components/VideoPortfolio.jsx';
+import BrandSlider from '@/components/BrandSlider.jsx';
 import ServiceROICalculator from '@/components/ServiceROICalculator.jsx';
 import ServiceCTA from '@/components/ServiceCTA.jsx';
 import Footer from '@/components/Footer.jsx';
 import { useParallax } from '@/hooks/useParallax.js';
+import { floatingAnimation } from '@/lib/animations.js';
 
 const ContentCreationPage = () => {
   const heroRef = useRef(null);
   const y = useParallax(heroRef, 150);
 
-  const portfolioItems = [
-    {
-      title: "AI Blog Network",
-      description: "Generated 100+ SEO-optimized articles per month.",
-      image: "https://images.unsplash.com/photo-1546663250-e28569a9706d?auto=format&fit=crop&q=80&w=800"
-    },
-    {
-      title: "Video Repurposing",
-      description: "Turned 1 podcast into 30 pieces of micro-content.",
-      image: "https://images.unsplash.com/photo-1546663250-e28569a9706d?auto=format&fit=crop&q=80&w=800"
-    }
-  ];
 
   const calcInputs = [
     { id: 'pieces', label: 'Content Pieces / Mo', min: 10, max: 500, step: 10, default: 50, prefix: '', suffix: '' },
@@ -57,20 +46,25 @@ const ContentCreationPage = () => {
       <ServiceHeader />
       
       <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0 bg-[hsl(var(--background))]" />
+        <div className="absolute inset-0 z-0 bg-gradient-to-br from-[hsl(var(--background))] via-[hsl(var(--muted))] to-[hsl(var(--background))]" />
         
-        {/* Sliding Content Cards Background */}
-        <div className="absolute inset-0 z-10 overflow-hidden opacity-20 flex gap-4 transform -rotate-12 scale-150">
-          {[1,2,3].map((col) => (
-            <motion.div 
-              key={col}
-              animate={{ y: col % 2 === 0 ? [0, -1000] : [-1000, 0] }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              className="flex flex-col gap-4"
+        {/* Floating Icons */}
+        <div className="absolute inset-0 z-10 pointer-events-none">
+          {[FileText, Video, PenTool, Zap].map((Icon, i) => (
+            <motion.div
+              key={i}
+              variants={floatingAnimation}
+              initial="initial"
+              animate="animate"
+              style={{
+                position: 'absolute',
+                top: `${20 + Math.random() * 60}%`,
+                left: `${10 + Math.random() * 80}%`,
+                animationDelay: `${i * 0.5}s`
+              }}
+              className="p-4 glass-card rounded-2xl text-[hsl(var(--primary))] opacity-50"
             >
-              {[...Array(10)].map((_, i) => (
-                <div key={i} className="w-64 h-40 glass-card rounded-xl" />
-              ))}
+              <Icon size={32} />
             </motion.div>
           ))}
         </div>
@@ -85,13 +79,8 @@ const ContentCreationPage = () => {
         </motion.div>
       </section>
 
-      <ServiceOverview 
-        icon={FileText}
-        headline="Feed the algorithm without burning out."
-        description="We build automated content engines that turn your core ideas into blogs, social posts, newsletters, and videos automatically."
-      />
-
-      <PortfolioGrid items={portfolioItems} />
+      <VideoPortfolio />
+      <BrandSlider />
 
       <ServiceROICalculator 
         title="Content Engine ROI"

@@ -28,11 +28,7 @@ const ServiceHeader = () => {
           </Link>
 
           <div className="hidden md:flex items-center space-x-6">
-            <Link 
-              to="/" 
-              state={{ scrollTo: 'services' }}
-              className="text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] font-medium transition-colors flex items-center gap-2"
-            >
+            <Link to="/" className="text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] font-medium transition-colors flex items-center gap-2">
               <ArrowLeft className="w-4 h-4" /> Back to Home
             </Link>
           </div>
@@ -52,11 +48,7 @@ const ServiceHeader = () => {
             className="md:hidden glass-card border-t border-[hsl(var(--border))]"
           >
             <div className="px-4 py-4 space-y-3">
-              <Link 
-                to="/" 
-                state={{ scrollTo: 'services' }}
-                className="block w-full text-left text-white hover:text-[hsl(var(--primary))] font-medium py-3 text-lg flex items-center gap-2"
-              >
+              <Link to="/" className="block w-full text-left text-white hover:text-[hsl(var(--primary))] font-medium py-3 text-lg flex items-center gap-2">
                 <ArrowLeft className="w-5 h-5" /> Back to Home
               </Link>
             </div>

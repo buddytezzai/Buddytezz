@@ -2,32 +2,20 @@
 import React, { useRef } from 'react';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
-import { Zap, Clock, DollarSign, TrendingUp } from 'lucide-react';
+import { Zap, Cpu, Settings, Target } from 'lucide-react';
 import ServiceHeader from '@/components/ServiceHeader.jsx';
-import ServiceOverview from '@/components/ServiceOverview.jsx';
-import PortfolioGrid from '@/components/PortfolioGrid.jsx';
+import VideoPortfolio from '@/components/VideoPortfolio.jsx';
+import BrandSlider from '@/components/BrandSlider.jsx';
 import ServiceROICalculator from '@/components/ServiceROICalculator.jsx';
 import ServiceCTA from '@/components/ServiceCTA.jsx';
 import Footer from '@/components/Footer.jsx';
 import { useParallax } from '@/hooks/useParallax.js';
-import { floatingAnimation, dataFlowAnimation } from '@/lib/animations.js';
+import { floatingAnimation } from '@/lib/animations.js';
 
 const AIAutomationPage = () => {
   const heroRef = useRef(null);
   const y = useParallax(heroRef, 150);
 
-  const portfolioItems = [
-    {
-      title: "Customer Call Support Bot",
-      description: "Implemented an AI agent that resolved 80% of customer enquiries instantly.",
-      image: "https://images.unsplash.com/photo-1678995635432-d9e89c7a8fc5?auto=format&fit=crop&q=80&w=800"
-    },
-    {
-      title: "AI Avatar Content Creation",
-      description: "Automated Content production saving hours for busy individuals.",
-      image: "https://images.unsplash.com/photo-1678995635432-d9e89c7a8fc5?auto=format&fit=crop&q=80&w=800"
-    }
-  ];
 
   const calcInputs = [
     { id: 'tasks', label: 'Monthly Tasks', min: 100, max: 10000, step: 100, default: 1000, prefix: '', suffix: '' },
@@ -47,9 +35,9 @@ const AIAutomationPage = () => {
   };
 
   const calcResults = [
-    { id: 'time_saved', label: 'Hours Saved / Mo', icon: Clock, prefix: '', suffix: 'h' },
-    { id: 'cost_savings', label: 'Cost Savings / Mo', icon: DollarSign, isCurrency: true },
-    { id: 'roi_percentage', label: 'Estimated ROI', icon: TrendingUp, prefix: '', suffix: '%', colorClass: 'text-[hsl(var(--accent))]' }
+    { id: 'time_saved', label: 'Hours Saved / Mo', icon: Settings, prefix: '', suffix: 'h' },
+    { id: 'cost_savings', label: 'Cost Savings / Mo', icon: Target, isCurrency: true },
+    { id: 'roi_percentage', label: 'Estimated ROI', icon: Zap, prefix: '', suffix: '%', colorClass: 'text-[hsl(var(--accent))]' }
   ];
 
   return (
@@ -59,18 +47,27 @@ const AIAutomationPage = () => {
       
       {/* Hero Section */}
       <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-[hsl(var(--background))] opacity-90 z-10" />
-          <img src="https://images.unsplash.com/photo-1678995635432-d9e89c7a8fc5?auto=format&fit=crop&q=80&w=2000" alt="AI Background" className="w-full h-full object-cover" loading="lazy" />
-        </div>
+        <div className="absolute inset-0 z-0 bg-gradient-to-br from-[hsl(var(--background))] via-[hsl(var(--muted))] to-[hsl(var(--background))]" />
         
-        {/* Neural Network Animation Overlay */}
-        <div className="absolute inset-0 z-10 pointer-events-none flex items-center justify-center opacity-30">
-          <svg width="100%" height="100%" className="absolute">
-            <motion.path d="M100,100 L300,300 L500,100" stroke="hsl(var(--primary))" strokeWidth="2" fill="none" variants={dataFlowAnimation} initial="initial" animate="animate" />
-            <motion.path d="M800,500 L600,300 L800,100" stroke="hsl(var(--accent))" strokeWidth="2" fill="none" variants={dataFlowAnimation} initial="initial" animate="animate" style={{ animationDelay: '1s' }} />
-          </svg>
-          <motion.div variants={floatingAnimation} animate="animate" className="w-32 h-32 rounded-full bg-[hsl(var(--primary))] blur-[100px]" />
+        {/* Floating Icons */}
+        <div className="absolute inset-0 z-10 pointer-events-none">
+          {[Zap, Cpu, Settings, Target].map((Icon, i) => (
+            <motion.div
+              key={i}
+              variants={floatingAnimation}
+              initial="initial"
+              animate="animate"
+              style={{
+                position: 'absolute',
+                top: `${20 + Math.random() * 60}%`,
+                left: `${10 + Math.random() * 80}%`,
+                animationDelay: `${i * 0.5}s`
+              }}
+              className="p-4 glass-card rounded-2xl text-[hsl(var(--primary))] opacity-50"
+            >
+              <Icon size={32} />
+            </motion.div>
+          ))}
         </div>
 
         <motion.div style={{ y }} className="relative z-20 text-center px-4 max-w-5xl mx-auto">
@@ -87,13 +84,8 @@ const AIAutomationPage = () => {
         </motion.div>
       </section>
 
-      <ServiceOverview 
-        icon={Zap}
-        headline="Stop wasting time on repetitive tasks."
-        description="Our AI automation systems integrate seamlessly with your existing tools (CRM, ERP, Slack, Email) to handle data entry, customer support, and complex workflows automatically."
-      />
-
-      <PortfolioGrid items={portfolioItems} />
+      <VideoPortfolio />
+      <BrandSlider />
 
       <ServiceROICalculator 
         title="AI Automation ROI Calculator"

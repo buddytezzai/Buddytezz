@@ -6,22 +6,11 @@ const Preloader = ({ onComplete }) => {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    // Check if intro has already played in this session
-    const hasSeenIntro = sessionStorage.getItem('hasSeenIntro');
-    
-    if (hasSeenIntro) {
-      // If seen, finish immediately
-      setIsVisible(false);
-      onComplete();
-      return;
-    }
-
     const timer = setTimeout(() => {
       setIsVisible(false);
-      sessionStorage.setItem('hasSeenIntro', 'true');
       setTimeout(() => {
         onComplete();
-      }, 800);
+      }, 800); // Wait for fade out animation
     }, 2500);
 
     return () => clearTimeout(timer);

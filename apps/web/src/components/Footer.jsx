@@ -2,28 +2,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Linkedin, Mail } from 'lucide-react';
-import { useNavigate, useLocation } from 'react-router-dom';
 
 const Footer = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const handleQuickLink = (href) => {
-    if (href.startsWith('#')) {
-      if (location.pathname === '/') {
-        const element = document.querySelector(href);
-        if (element) element.scrollIntoView({ behavior: 'smooth' });
-      } else {
-        navigate('/', { state: { scrollTo: href.replace('#', '') } });
-      }
+  const scrollToSection = (href) => {
+    const element = document.querySelector(href);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   const socialLinks = [
-    { icon: Facebook, href: 'https://www.facebook.com/BuddyTezz', label: 'Facebook' },
-    { icon: Twitter, href: 'https://x.com/BuddyTezz', label: 'X (Twitter)' },
-    { icon: Instagram, href: 'https://www.instagram.com/buddy_tezz/?hl=en', label: 'Instagram' },
-    { icon: Linkedin, href: 'https://www.linkedin.com/in/buddy-tezz-3b8466280/', label: 'LinkedIn' }
+    { icon: Facebook, href: '#', label: 'Facebook' },
+    { icon: Twitter, href: '#', label: 'Twitter' },
+    { icon: Instagram, href: '#', label: 'Instagram' },
+    { icon: Linkedin, href: '#', label: 'LinkedIn' }
   ];
 
   const quickLinks = [
@@ -44,7 +36,6 @@ const Footer = () => {
                 <img 
                   src="https://horizons-cdn.hostinger.com/e8899cff-47c0-4fa0-a3d5-02b5278d01c4/f9785657bb3b62a1888faa1e5159e176.png" 
                   alt="Buddy Tezz AI Logo" 
-                  loading="lazy"
                   className="h-16 w-auto md:h-20 object-contain hover:scale-105 transition-transform"
                 />
                 <span className="text-xl md:text-2xl font-bold text-white font-['Outfit'] whitespace-nowrap tracking-tight">
@@ -71,8 +62,8 @@ const Footer = () => {
                 ) : (
                   <button
                     key={link.href}
-                    onClick={() => handleQuickLink(link.href)}
-                    className="block text-base text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))] rounded px-1 -ml-1 text-left"
+                    onClick={() => scrollToSection(link.href)}
+                    className="block text-base text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))] rounded px-1 -ml-1"
                   >
                     {link.label}
                   </button>
@@ -88,10 +79,8 @@ const Footer = () => {
                 <a
                   key={social.label}
                   href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   aria-label={`Follow us on ${social.label}`}
-                  className="w-12 h-12 rounded-xl bg-[hsl(var(--muted))] flex items-center justify-center text-[hsl(var(--foreground))] hover:bg-[hsl(var(--primary))] hover:text-white transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))] hover:scale-110 active:scale-95 shadow-lg hover:shadow-[hsl(var(--primary))/20]"
+                  className="w-12 h-12 rounded-xl bg-[hsl(var(--muted))] flex items-center justify-center text-[hsl(var(--foreground))] hover:bg-[hsl(var(--primary))] hover:text-white transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))]"
                 >
                   <social.icon className="w-5 h-5" aria-hidden="true" />
                 </a>

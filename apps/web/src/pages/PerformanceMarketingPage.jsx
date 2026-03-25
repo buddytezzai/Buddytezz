@@ -2,31 +2,20 @@
 import React, { useRef } from 'react';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
-import { TrendingUp, BarChart3, Target, DollarSign } from 'lucide-react';
+import { TrendingUp, BarChart3, Target, DollarSign, Zap } from 'lucide-react';
 import ServiceHeader from '@/components/ServiceHeader.jsx';
-import ServiceOverview from '@/components/ServiceOverview.jsx';
-import PortfolioGrid from '@/components/PortfolioGrid.jsx';
+import VideoPortfolio from '@/components/VideoPortfolio.jsx';
+import BrandSlider from '@/components/BrandSlider.jsx';
 import ServiceROICalculator from '@/components/ServiceROICalculator.jsx';
 import ServiceCTA from '@/components/ServiceCTA.jsx';
 import Footer from '@/components/Footer.jsx';
 import { useParallax } from '@/hooks/useParallax.js';
+import { floatingAnimation } from '@/lib/animations.js';
 
 const PerformanceMarketingPage = () => {
   const heroRef = useRef(null);
   const y = useParallax(heroRef, 150);
 
-  const portfolioItems = [
-    {
-      title: "Meta Ads Scaling",
-      description: "Scaled ad spend from $10k to $100k/mo while maintaining 3.5x ROAS.",
-      image: "https://images.unsplash.com/photo-1625296276703-3fbc924f07b5?auto=format&fit=crop&q=80&w=800"
-    },
-    {
-      title: "Google Search Dominance",
-      description: "Decreased CPA by 45% for a B2B SaaS company.",
-      image: "https://images.unsplash.com/photo-1625296276703-3fbc924f07b5?auto=format&fit=crop&q=80&w=800"
-    }
-  ];
 
   const calcInputs = [
     { id: 'spend', label: 'Monthly Ad Spend', min: 1000, max: 100000, step: 1000, default: 10000, isCurrency: true },
@@ -57,21 +46,27 @@ const PerformanceMarketingPage = () => {
       <ServiceHeader />
       
       <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0 bg-[hsl(var(--background))]" />
+        <div className="absolute inset-0 z-0 bg-gradient-to-br from-[hsl(var(--background))] via-[hsl(var(--muted))] to-[hsl(var(--background))]" />
         
-        {/* Chart Animation Background */}
-        <div className="absolute inset-0 z-10 flex items-end justify-center opacity-20 pointer-events-none pb-20">
-          <div className="flex items-end gap-4 h-64">
-            {[40, 60, 45, 80, 65, 100].map((height, i) => (
-              <motion.div 
-                key={i}
-                initial={{ height: 0 }}
-                animate={{ height: `${height}%` }}
-                transition={{ duration: 1.5, delay: i * 0.2, ease: "easeOut" }}
-                className="w-16 bg-gradient-to-t from-[hsl(var(--primary))] to-[hsl(var(--accent))] rounded-t-md"
-              />
-            ))}
-          </div>
+        {/* Floating Icons */}
+        <div className="absolute inset-0 z-10 pointer-events-none">
+          {[TrendingUp, BarChart3, Target, DollarSign].map((Icon, i) => (
+            <motion.div
+              key={i}
+              variants={floatingAnimation}
+              initial="initial"
+              animate="animate"
+              style={{
+                position: 'absolute',
+                top: `${20 + Math.random() * 60}%`,
+                left: `${10 + Math.random() * 80}%`,
+                animationDelay: `${i * 0.5}s`
+              }}
+              className="p-4 glass-card rounded-2xl text-[hsl(var(--primary))] opacity-50"
+            >
+              <Icon size={32} />
+            </motion.div>
+          ))}
         </div>
 
         <motion.div style={{ y }} className="relative z-20 text-center px-4 max-w-5xl mx-auto">
@@ -84,13 +79,8 @@ const PerformanceMarketingPage = () => {
         </motion.div>
       </section>
 
-      <ServiceOverview 
-        icon={BarChart3}
-        headline="We treat your ad spend like our own."
-        description="Through rigorous A/B testing, AI-powered audience targeting, and compelling creative, we build scalable acquisition funnels that predictably turn clicks into customers."
-      />
-
-      <PortfolioGrid items={portfolioItems} />
+      <VideoPortfolio />
+      <BrandSlider />
 
       <ServiceROICalculator 
         title="Ad Spend ROI Predictor"
