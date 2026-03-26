@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
+import SocialLinks from '@/components/SocialLinks.jsx';
 
 const StickyNavBar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -96,6 +97,8 @@ const StickyNavBar = () => {
                 {item.label}
               </motion.button>
             ))}
+            <div className="h-8 w-px bg-white/10 mx-2" />
+            <SocialLinks iconSize={18} />
           </div>
 
           <button
@@ -128,6 +131,9 @@ const StickyNavBar = () => {
                   {item.label}
                 </button>
               ))}
+              <div className="pt-6 border-t border-white/10 flex justify-center">
+                <SocialLinks iconSize={20} />
+              </div>
             </div>
           </motion.div>
         )}

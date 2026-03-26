@@ -8,6 +8,7 @@ import ImageShowcase from '@/components/ImageShowcase.jsx';
 import ServiceROICalculator from '@/components/ServiceROICalculator.jsx';
 import ServiceCTA from '@/components/ServiceCTA.jsx';
 import Footer from '@/components/Footer.jsx';
+import SocialLinks from '@/components/SocialLinks.jsx';
 import { useParallax } from '@/hooks/useParallax.js';
 import { floatingAnimation } from '@/lib/animations.js';
 
@@ -117,9 +118,16 @@ const AIAutomationPage = () => {
       />
 
       <ServiceCTA 
-        headline="Ready to put your business on autopilot?"
-        subheadline="Book a free discovery call to identify the best automation opportunities in your workflow."
+        headline="Ready to automate?"
+        subheadline="Let's build your AI workforce today."
       />
+
+      <section className="py-12 border-t border-white/5 bg-[hsl(var(--background))]">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <h3 className="text-2xl font-bold text-white mb-6 font-['Outfit']">Follow our journey</h3>
+          <SocialLinks className="justify-center" iconSize={24} />
+        </div>
+      </section>
 
       <Footer />
     </div>

@@ -1,7 +1,8 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Facebook, Twitter, Instagram, Linkedin, Mail } from 'lucide-react';
+import { Mail } from 'lucide-react';
+import SocialLinks from '@/components/SocialLinks.jsx';
 
 const Footer = () => {
   const scrollToSection = (href) => {
@@ -11,12 +12,6 @@ const Footer = () => {
     }
   };
 
-  const socialLinks = [
-    { icon: Facebook, href: '#', label: 'Facebook' },
-    { icon: Twitter, href: '#', label: 'Twitter' },
-    { icon: Instagram, href: '#', label: 'Instagram' },
-    { icon: Linkedin, href: '#', label: 'LinkedIn' }
-  ];
 
   const quickLinks = [
     { label: 'Services', href: '#services' },
@@ -74,18 +69,7 @@ const Footer = () => {
 
           <div>
             <p className="font-semibold text-lg text-[hsl(var(--foreground))] mb-6">Connect with us</p>
-            <div className="flex space-x-4">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  aria-label={`Follow us on ${social.label}`}
-                  className="w-12 h-12 rounded-xl bg-[hsl(var(--muted))] flex items-center justify-center text-[hsl(var(--foreground))] hover:bg-[hsl(var(--primary))] hover:text-white transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))]"
-                >
-                  <social.icon className="w-5 h-5" aria-hidden="true" />
-                </a>
-              ))}
-            </div>
+            <SocialLinks iconSize={18} className="mt-2" />
             <a
               href="mailto:hello@buddytezz.ai"
               className="flex items-center space-x-3 mt-6 text-base text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))] rounded px-1 -ml-1 w-fit"

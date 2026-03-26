@@ -69,6 +69,13 @@ const SocialMediaPage = () => {
         subheadline="Let's build a social strategy that actually drives revenue."
       />
 
+      <section className="py-12 border-t border-white/5 bg-[hsl(var(--background))]">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <h3 className="text-2xl font-bold text-white mb-6 font-['Outfit']">Follow our journey</h3>
+          <SocialLinks className="justify-center" iconSize={24} />
+        </div>
+      </section>
+
       <Footer />
     </div>
   );

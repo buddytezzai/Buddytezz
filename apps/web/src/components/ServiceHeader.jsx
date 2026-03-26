@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ArrowLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import SocialLinks from '@/components/SocialLinks.jsx';
 
 const SERVICES = [
   { label: 'AI Automation', href: '/services/ai-automation' },
@@ -51,6 +52,10 @@ const ServiceHeader = () => {
               </Link>
             ))}
             
+            <div className="h-6 w-px bg-white/10 mx-2 hidden lg:block" />
+            
+            <SocialLinks iconSize={16} className="hidden lg:flex" />
+
             <div className="h-6 w-px bg-white/10 mx-2 hidden lg:block" />
             
             <Link to="/" className="px-4 py-2 bg-[hsl(var(--primary))] text-white rounded-xl text-sm font-semibold hover:shadow-[0_0_20px_rgba(var(--primary-rgb),0.4)] transition-all flex items-center gap-2">
@@ -103,6 +108,10 @@ const ServiceHeader = () => {
                 >
                   <ArrowLeft className="w-5 h-5" /> Back to Home
                 </Link>
+              </div>
+
+              <div className="pt-4 flex justify-center">
+                <SocialLinks iconSize={18} />
               </div>
             </div>
           </motion.div>

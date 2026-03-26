@@ -8,6 +8,7 @@ import ImageShowcase from '@/components/ImageShowcase.jsx';
 import ServiceROICalculator from '@/components/ServiceROICalculator.jsx';
 import ServiceCTA from '@/components/ServiceCTA.jsx';
 import Footer from '@/components/Footer.jsx';
+import SocialLinks from '@/components/SocialLinks.jsx';
 import { useParallax } from '@/hooks/useParallax.js';
 import { floatingAnimation } from '@/lib/animations.js';
 
@@ -109,9 +110,16 @@ const WebsiteDevelopmentPage = () => {
       />
 
       <ServiceCTA 
-        headline="Upgrade your digital storefront."
-        subheadline="Let's build a website that works as hard as you do."
+        headline="Build your digital future"
+        subheadline="Premium web experiences that convert."
       />
+
+      <section className="py-12 border-t border-white/5 bg-[hsl(var(--background))]">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <h3 className="text-2xl font-bold text-white mb-6 font-['Outfit']">Follow our journey</h3>
+          <SocialLinks className="justify-center" iconSize={24} />
+        </div>
+      </section>
 
       <Footer />
     </div>
