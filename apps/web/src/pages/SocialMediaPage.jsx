@@ -11,6 +11,7 @@ import ServiceCTA from '@/components/ServiceCTA.jsx';
 import Footer from '@/components/Footer.jsx';
 import { useParallax } from '@/hooks/useParallax.js';
 import { floatingAnimation } from '@/lib/animations.js';
+import SocialLinks from '@/components/SocialLinks.jsx';
 
 const SocialMediaPage = () => {
   const heroRef = useRef(null);
