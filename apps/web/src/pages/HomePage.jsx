@@ -13,7 +13,7 @@ import ConsultationForm from '@/components/ConsultationForm.jsx';
 import FloatingCTA from '@/components/FloatingCTA.jsx';
 import Footer from '@/components/Footer.jsx';
 import { Toaster } from '@/components/ui/sonner';
-import { Zap, Share2, FileText, Globe, Palette, TrendingUp, MessageSquare } from 'lucide-react';
+import { Zap, Share2, FileText, Globe, Palette, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const HomePage = () => {
@@ -86,7 +86,6 @@ const HomePage = () => {
     }
   ];
 
-  const openWhatsApp = () => window.open('https://wa.me/1234567890', '_blank');
 
   if (isLoading) {
     return <Preloader onComplete={() => setIsLoading(false)} />;

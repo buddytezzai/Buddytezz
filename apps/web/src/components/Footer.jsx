@@ -71,12 +71,12 @@ const Footer = () => {
             <p className="font-semibold text-lg text-[hsl(var(--foreground))] mb-6">Connect with us</p>
             <SocialLinks iconSize={18} className="mt-2" />
             <a
-              href="mailto:hello@buddytezz.ai"
+              href="mailto:buddytezzai@gmail.com"
               className="flex items-center space-x-3 mt-6 text-base text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))] rounded px-1 -ml-1 w-fit"
-              aria-label="Email us at hello@buddytezz.ai"
+              aria-label="Email us at buddytezzai@gmail.com"
             >
               <Mail className="w-5 h-5" aria-hidden="true" />
-              <span>hello@buddytezz.ai</span>
+              <span>buddytezzai@gmail.com</span>
             </a>
           </div>
         </div>

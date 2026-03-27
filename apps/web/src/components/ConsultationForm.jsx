@@ -189,13 +189,13 @@ const ConsultationForm = () => {
 
             <div className="space-y-2">
               <Label htmlFor="description" className="text-base font-medium text-[hsl(var(--foreground))]">
-                Description (Optional)
+                Message / Requirement <span className="text-[hsl(var(--muted-foreground))] text-sm">(Optional)</span>
               </Label>
               <textarea
                 id="description"
                 value={formData.description}
                 onChange={(e) => handleChange('description', e.target.value)}
-                placeholder="Tell us a bit more about your project or goals..."
+                placeholder="Tell us about your project, goals, or any specific requirements..."
                 className="flex min-h-[100px] w-full rounded-md border bg-[hsl(var(--muted))] border-[hsl(var(--border))] px-3 py-2 text-sm text-[hsl(var(--foreground))] placeholder:text-[hsl(var(--muted-foreground))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))] disabled:cursor-not-allowed disabled:opacity-50"
               />
             </div>
