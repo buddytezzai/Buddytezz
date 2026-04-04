@@ -57,7 +57,7 @@ const Preloader = ({ onComplete }) => {
           className="relative flex flex-col md:flex-row items-center gap-4 md:gap-6"
         >
           <img 
-            src="https://horizons-cdn.hostinger.com/e8899cff-47c0-4fa0-a3d5-02b5278d01c4/f9785657bb3b62a1888faa1e5159e176.png" 
+            src="/images/logo.png" 
             alt="Buddy Tezz AI Logo" 
             className="h-32 w-auto md:h-48 object-contain"
           />

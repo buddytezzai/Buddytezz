@@ -74,7 +74,7 @@ const StickyNavBar = () => {
             aria-label="Go to Home"
           >
             <img 
-              src="https://horizons-cdn.hostinger.com/e8899cff-47c0-4fa0-a3d5-02b5278d01c4/f9785657bb3b62a1888faa1e5159e176.png" 
+              src="/images/logo.png" 
               alt="Buddy Tezz AI Logo" 
               className="h-16 w-auto md:h-20 object-contain drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]"
             />

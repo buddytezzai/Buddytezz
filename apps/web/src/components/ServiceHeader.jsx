@@ -33,7 +33,7 @@ const ServiceHeader = () => {
         <div className="flex items-center justify-between h-16 md:h-18">
           <Link to="/" className="flex items-center gap-3 group shrink-0">
             <img 
-              src="https://horizons-cdn.hostinger.com/e8899cff-47c0-4fa0-a3d5-02b5278d01c4/f9785657bb3b62a1888faa1e5159e176.png" 
+              src="/images/logo.png" 
               alt="Buddy Tezz AI Logo" 
               className="h-10 w-auto md:h-12 object-contain group-hover:scale-105 transition-transform"
             />

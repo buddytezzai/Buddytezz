@@ -1,3 +1,5 @@
+import nodemailer from 'nodemailer';
+
 export default async function handler(req, res) {
   // Only allow POST requests
   if (req.method !== 'POST') {
@@ -11,9 +13,6 @@ export default async function handler(req, res) {
     if (!name || !email || !phone || !service) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
-
-    // Since we need Nodemailer to send the email, we'll import it securely on the server
-    const nodemailer = require('nodemailer');
 
     // Create a CSV string from the data (this acts exactly like an Excel sheet when opened)
     const escapeCsv = (str) => `"${String(str || '').replace(/"/g, '""')}"`;
