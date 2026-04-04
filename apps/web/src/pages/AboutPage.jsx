@@ -23,7 +23,7 @@ const AboutPage = () => {
 
         <div className="space-y-8 text-lg md:text-xl text-[hsl(var(--muted-foreground))] leading-relaxed max-w-3xl mx-auto">
           <p>
-            Buddy Tezz AI is a growth-focused digital agency built to help businesses scale faster using AI, automation, and smart content systems.
+            Buddy Tezz AI is a growth-focused digital company built to help businesses scale faster using AI, automation, and smart content systems.
           </p>
 
           <p>
