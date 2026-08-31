@@ -199,16 +199,23 @@ const ProductCheckoutModal = ({ isOpen, onClose, productName, priceINR, priceUSD
                 }),
               });
 
+              const rawText = await payVerifyRes.text();
+              let verifyData = {};
+              try {
+                verifyData = JSON.parse(rawText);
+              } catch (e) {
+                verifyData = { message: rawText || 'Server error occurred during payment verification.' };
+              }
+
               if (!payVerifyRes.ok) {
-                const errData = await payVerifyRes.json();
-                throw new Error(errData.message || 'Payment signature verification failed.');
+                throw new Error(verifyData.message || 'Payment signature verification failed.');
               }
 
               setStep('success');
               resolve();
             } catch (err) {
               setStep('error');
-              setErrorMsg(err.message);
+              setErrorMsg(err.message || 'Something went wrong during payment verification.');
               reject(err);
             } finally {
               setIsLoading(false);
