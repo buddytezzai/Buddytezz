@@ -15,9 +15,9 @@ import { Button } from '@/components/ui/button';
 const PRODUCT = {
   name: 'Personal Budget Tracker Template',
   tagline: 'Take full control of your finances with automated income, expense, savings & investment tracking in one powerful Excel spreadsheet.',
-  priceINR: '₹999',
-  priceUSD: '$12',
-  originalPriceINR: '₹2,999',
+  priceINR: '₹99',
+  priceUSD: '$1.99',
+  originalPriceINR: '₹499',
   format: 'Excel (.xlsx)',
   pages: 'Automated Spreadsheets',
   instant: true,
@@ -154,14 +154,14 @@ const DigitalProductPage = () => {
                       <span className="text-lg text-[hsl(var(--muted-foreground))]">{PRODUCT.priceUSD}</span>
                       <span className="text-base text-[hsl(var(--muted-foreground))] line-through">{PRODUCT.originalPriceINR}</span>
                     </div>
-                    <p className="text-xs text-green-400 mt-1">🔥 67% off — Limited time offer</p>
+                    <p className="text-xs text-green-400 mt-1 font-semibold">🔥 80% off — Limited time offer</p>
                   </div>
 
                   <Button
                     onClick={() => setIsModalOpen(true)}
                     className="glow-button text-white font-bold px-8 py-6 text-lg rounded-xl group flex-shrink-0"
                     id="hero-buy-btn"
-                    aria-label="Buy AI Business Automation Playbook"
+                    aria-label="Buy Personal Budget Tracker Template"
                   >
                     Get Instant Access
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
@@ -369,7 +369,7 @@ const DigitalProductPage = () => {
                     <span className="text-xl text-[hsl(var(--muted-foreground))]">{PRODUCT.priceUSD}</span>
                   </div>
                   <span className="inline-block px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm font-semibold border border-green-500/30">
-                    🔥 67% Off — Limited Time
+                    🔥 80% Off — Limited Time Deal
                   </span>
                 </div>
 

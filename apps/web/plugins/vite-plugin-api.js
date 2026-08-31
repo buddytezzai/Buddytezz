@@ -147,7 +147,7 @@ export default function apiPlugin() {
 
       // ── /api/create-order ────────────────────────────────────────────
       const PRODUCTS = {
-        'ai-automation-playbook': { name: 'Personal Budget Tracker Template', priceINR: 99900, priceUSD: 1200 },
+        'ai-automation-playbook': { name: 'Personal Budget Tracker Template', priceINR: 9900, priceUSD: 199 },
       };
 
       server.middlewares.use('/api/create-order', async (req, res) => {

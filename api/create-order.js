@@ -4,8 +4,8 @@ import Razorpay from 'razorpay';
 const PRODUCTS = {
   'ai-automation-playbook': {
     name: 'Personal Budget Tracker Template',
-    priceINR: 99900, // in paise — ₹999
-    priceUSD: 1200,  // in cents — $12
+    priceINR: 9900, // in paise — ₹99
+    priceUSD: 199,  // in cents — $1.99
     filename: 'Personal_Budget_Tracker_Template.xlsx',
   }
 };

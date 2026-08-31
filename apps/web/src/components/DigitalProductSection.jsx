@@ -84,8 +84,15 @@ const DigitalProductSection = () => {
 
                   <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                     <div>
-                      <p className="text-xs text-[hsl(var(--muted-foreground))] uppercase tracking-wide mb-0.5">Starting from</p>
-                      <p className="text-3xl font-black text-white">₹999 <span className="text-base font-normal text-[hsl(var(--muted-foreground))]">/ $12</span></p>
+                      <div className="flex items-center gap-2 mb-0.5">
+                        <span className="text-xs text-[hsl(var(--muted-foreground))] uppercase tracking-wide">Starting from</span>
+                        <span className="text-xs font-bold text-green-400 bg-green-500/20 px-2 py-0.5 rounded-full border border-green-500/30">80% OFF</span>
+                      </div>
+                      <div className="flex items-baseline gap-2">
+                        <p className="text-3xl font-black text-white">₹99</p>
+                        <p className="text-sm text-[hsl(var(--muted-foreground))] line-through">₹499</p>
+                        <span className="text-sm text-[hsl(var(--muted-foreground))]">/ $1.99</span>
+                      </div>
                     </div>
                     <Link to="/digital-products" className="flex-shrink-0">
                       <Button
