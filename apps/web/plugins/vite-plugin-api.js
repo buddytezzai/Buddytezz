@@ -5,25 +5,36 @@ import fs from 'node:fs';
 import { readFileSync } from 'node:fs';
 import Razorpay from 'razorpay';
 
-// Load root .env manually so GMAIL_APP_PASSWORD is available in the Vite server process.
-// (Vite only loads apps/web/.env by default, not the monorepo root .env)
+// Load root .env and .env.local manually so variables are available in Vite dev server process.
 function loadRootEnv() {
-  try {
-    // npm run dev --prefix apps/web sets cwd to apps/web/, so ../../ = monorepo root
-    const envPath = path.resolve(process.cwd(), '../../.env');
-    const lines = readFileSync(envPath, 'utf-8').split(/\r?\n/);
-    for (const line of lines) {
-      const trimmed = line.trim();
-      if (!trimmed || trimmed.startsWith('#')) continue;
-      const eqIdx = trimmed.indexOf('=');
-      if (eqIdx === -1) continue;
-      const key = trimmed.slice(0, eqIdx).trim();
-      const val = trimmed.slice(eqIdx + 1).trim().replace(/^["']|["']$/g, '');
-      if (key && !(key in process.env)) process.env[key] = val;
+  const candidatePaths = [
+    path.resolve(process.cwd(), '.env'),
+    path.resolve(process.cwd(), '.env.local'),
+    path.resolve(process.cwd(), '../.env'),
+    path.resolve(process.cwd(), '../.env.local'),
+    path.resolve(process.cwd(), '../../.env'),
+    path.resolve(process.cwd(), '../../.env.local'),
+  ];
+
+  for (const envPath of candidatePaths) {
+    if (fs.existsSync(envPath)) {
+      try {
+        const lines = readFileSync(envPath, 'utf-8').split(/\r?\n/);
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed || trimmed.startsWith('#')) continue;
+          const eqIdx = trimmed.indexOf('=');
+          if (eqIdx === -1) continue;
+          const key = trimmed.slice(0, eqIdx).trim();
+          const val = trimmed.slice(eqIdx + 1).trim().replace(/^["']|["']$/g, '');
+          if (key && !process.env[key]) {
+            process.env[key] = val;
+          }
+        }
+      } catch (e) {
+        console.warn(`[vite-plugin-api] Error reading ${envPath}:`, e.message);
+      }
     }
-  } catch (e) {
-    console.warn('[vite-plugin-api] Could not load .env file:', e.message);
-    // .env not found — rely on process.env set externally
   }
 }
 
@@ -141,6 +152,110 @@ export default function apiPlugin() {
                 details: error.message,
               })
             );
+          }
+        });
+      });
+
+      // ── /api/send-otp ───────────────────────────────────────────────
+      server.middlewares.use('/api/send-otp', async (req, res) => {
+        if (req.method !== 'POST') {
+          res.writeHead(405, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ message: 'Method Not Allowed' }));
+          return;
+        }
+        let body = '';
+        req.on('data', chunk => (body += chunk.toString()));
+        req.on('end', async () => {
+          try {
+            const { email, name } = JSON.parse(body || '{}');
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+              res.writeHead(400, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify({ message: 'A valid email address is required.' }));
+              return;
+            }
+            const secret = process.env.DOWNLOAD_SECRET || process.env.RAZORPAY_KEY_SECRET || 'buddy-tezz-otp-secret-key';
+            const otp = Math.floor(100000 + Math.random() * 900000).toString();
+            const expiry = Date.now() + 10 * 60 * 1000;
+            const payload = `${email.toLowerCase().trim()}:${otp}:${expiry}`;
+            const signature = crypto.createHmac('sha256', secret).update(payload).digest('hex');
+            const hashToken = Buffer.from(`${email.toLowerCase().trim()}:${expiry}:${signature}`).toString('base64url');
+
+            const transporter = nodemailer.createTransport({
+              service: 'gmail',
+              auth: {
+                user: process.env.GMAIL_USER || 'buddytezzai@gmail.com',
+                pass: process.env.GMAIL_APP_PASSWORD,
+              },
+            });
+            const displayName = name ? name.trim() : 'there';
+            await transporter.sendMail({
+              from: '"Buddy Tezz AI Verification" <buddytezzai@gmail.com>',
+              to: email.trim(),
+              subject: `🔐 Your Verification Code: ${otp} — Buddy Tezz AI`,
+              html: `
+                <div style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; background: #0a0f1e; color: #fff; border-radius: 12px; padding: 24px; text-align: center;">
+                  <h2 style="color: #38bdf8;">Email Verification Code</h2>
+                  <p style="color: #cbd5e1; text-align: left;">Hi <strong>${displayName}</strong>,</p>
+                  <p style="color: #94a3b8; text-align: left;">Enter this 6-digit code to verify your email before payment:</p>
+                  <div style="background: #0f172a; border: 2px dashed #2563eb; border-radius: 8px; padding: 16px; margin: 20px 0;">
+                    <span style="font-size: 32px; font-weight: bold; letter-spacing: 6px; color: #38bdf8;">${otp}</span>
+                  </div>
+                  <p style="color: #64748b; font-size: 12px;">Valid for 10 minutes.</p>
+                </div>
+              `,
+              text: `Hi ${displayName}, your 6-digit verification code is: ${otp}`,
+            });
+
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ message: 'OTP sent successfully', hashToken }));
+          } catch (err) {
+            console.error('[api/send-otp]', err);
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ message: 'Failed to send verification code.', details: err.message }));
+          }
+        });
+      });
+
+      // ── /api/verify-otp ─────────────────────────────────────────────
+      server.middlewares.use('/api/verify-otp', async (req, res) => {
+        if (req.method !== 'POST') {
+          res.writeHead(405, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ message: 'Method Not Allowed' }));
+          return;
+        }
+        let body = '';
+        req.on('data', chunk => (body += chunk.toString()));
+        req.on('end', async () => {
+          try {
+            const { email, otp, hashToken } = JSON.parse(body || '{}');
+            if (!email || !otp || !hashToken) {
+              res.writeHead(400, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify({ message: 'Missing required parameters.' }));
+              return;
+            }
+            const cleanOtp = String(otp).trim();
+            const cleanEmail = String(email).toLowerCase().trim();
+            const secret = process.env.DOWNLOAD_SECRET || process.env.RAZORPAY_KEY_SECRET || 'buddy-tezz-otp-secret-key';
+            const decoded = Buffer.from(hashToken, 'base64url').toString('utf-8');
+            const [storedEmail, expiryStr, signature] = decoded.split(':');
+            if (storedEmail !== cleanEmail || Date.now() > parseInt(expiryStr, 10)) {
+              res.writeHead(400, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify({ message: 'Code expired or invalid email.' }));
+              return;
+            }
+            const expectedPayload = `${cleanEmail}:${cleanOtp}:${expiryStr}`;
+            const expectedSignature = crypto.createHmac('sha256', secret).update(expectedPayload).digest('hex');
+            if (expectedSignature !== signature) {
+              res.writeHead(400, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify({ message: 'Invalid verification code. Please check your email.' }));
+              return;
+            }
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ message: 'Email verified!', verified: true }));
+          } catch (err) {
+            console.error('[api/verify-otp]', err);
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ message: err.message }));
           }
         });
       });
