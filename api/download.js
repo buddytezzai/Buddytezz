@@ -57,13 +57,24 @@ export default async function handler(req, res) {
 
   const productInfo = PRODUCT_FILES[result.productId] || PRODUCT_FILES['ai-automation-playbook'];
 
-  // Try to find the file in /public/products/
-  // Vercel serverless functions can read from /public via process.cwd()
-  const filePath = path.join(process.cwd(), 'apps', 'web', 'public', 'products', productInfo.filename);
+  const candidatePaths = [
+    path.join(process.cwd(), 'apps', 'web', 'public', 'products', productInfo.filename),
+    path.join(process.cwd(), 'apps', 'web', 'out', 'products', productInfo.filename),
+    path.join(process.cwd(), 'public', 'products', productInfo.filename),
+    path.join(process.cwd(), 'products', productInfo.filename),
+    path.resolve(process.cwd(), '../apps/web/public/products', productInfo.filename),
+  ];
 
-  if (!fs.existsSync(filePath)) {
-    console.error(`Product file not found at: ${filePath}`);
-    // Fallback: send a helpful email-them page
+  let filePath = null;
+  for (const candidate of candidatePaths) {
+    if (fs.existsSync(candidate)) {
+      filePath = candidate;
+      break;
+    }
+  }
+
+  if (!filePath) {
+    console.error(`Product file not found in candidates: ${candidatePaths.join(', ')}`);
     return res.status(404).send(buildErrorPage(
       'Product file is temporarily unavailable. Please email buddytezzai@gmail.com with your Payment ID and we will send it directly.'
     ));

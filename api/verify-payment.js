@@ -54,9 +54,27 @@ export default async function handler(req, res) {
   // Signature is valid — generate secure download link
   const product = PRODUCTS[productId] || PRODUCTS['ai-automation-playbook'];
   const downloadToken = generateDownloadToken(productId, buyerEmail);
-  const baseUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : 'http://localhost:3000';
+  
+  // Resolve base domain to use custom/public domain instead of Vercel private preview deployment
+  let baseUrl = process.env.SITE_URL;
+  if (!baseUrl) {
+    const origin = req.headers.origin || req.headers.referer;
+    if (origin && !origin.includes('-projects.vercel.app')) {
+      try {
+        baseUrl = new URL(origin).origin;
+      } catch (e) {}
+    }
+    if (!baseUrl) {
+      const host = req.headers['x-forwarded-host'] || req.headers.host;
+      if (host && !host.includes('-projects.vercel.app')) {
+        const proto = req.headers['x-forwarded-proto'] || (host.includes('localhost') ? 'http' : 'https');
+        baseUrl = `${proto}://${host}`;
+      } else {
+        baseUrl = 'https://buddytezz.ai';
+      }
+    }
+  }
+  baseUrl = baseUrl.replace(/\/+$/, '');
   const downloadUrl = `${baseUrl}/api/download?token=${downloadToken}`;
 
   // Configure Nodemailer (same as submit-form.js)
@@ -68,6 +86,29 @@ export default async function handler(req, res) {
     },
   });
 
+  // Try to load product file to attach directly in email
+  let fileAttachment = null;
+  const candidatePaths = [
+    path.join(process.cwd(), 'apps', 'web', 'public', 'products', product.filename),
+    path.join(process.cwd(), 'apps', 'web', 'out', 'products', product.filename),
+    path.join(process.cwd(), 'public', 'products', product.filename),
+    path.join(process.cwd(), 'products', product.filename),
+    path.resolve(process.cwd(), '../apps/web/public/products', product.filename),
+  ];
+
+  for (const candidate of candidatePaths) {
+    try {
+      if (fs.existsSync(candidate)) {
+        fileAttachment = {
+          filename: product.filename,
+          content: fs.readFileSync(candidate),
+          contentType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        };
+        break;
+      }
+    } catch (e) {}
+  }
+
   // ── Buyer Delivery Email ──
   const buyerHtml = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0f1e; color: #fff; border-radius: 12px; overflow: hidden;">
@@ -77,20 +118,20 @@ export default async function handler(req, res) {
       </div>
       <div style="padding: 32px 24px;">
         <p style="font-size: 16px; color: #e2e8f0;">Hi <strong>${buyerName}</strong>,</p>
-        <p style="color: #94a3b8; line-height: 1.7;">Your payment was successful! Here is your secure download link for <strong style="color: #60a5fa;">${product.name}</strong>.</p>
+        <p style="color: #94a3b8; line-height: 1.7;">Your payment was successful! Your <strong>${product.name}</strong> is attached to this email and can also be downloaded below.</p>
 
         <div style="background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 20px; margin: 24px 0; text-align: center;">
-          <p style="margin: 0 0 12px; font-size: 14px; color: #94a3b8;">Click the button below to download your product</p>
+          <p style="margin: 0 0 12px; font-size: 14px; color: #94a3b8;">Click the button below to download your template directly:</p>
           <a href="${downloadUrl}" style="display: inline-block; background: linear-gradient(135deg, #2563eb, #0ea5e9); color: #fff; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 700; font-size: 16px; letter-spacing: 0.3px;">
             ⬇️ Download Now
           </a>
-          <p style="margin: 12px 0 0; font-size: 12px; color: #64748b;">This link expires in 24 hours. Need help? Email us at <a href="mailto:buddytezzai@gmail.com" style="color: #60a5fa;">buddytezzai@gmail.com</a></p>
+          <p style="margin: 12px 0 0; font-size: 12px; color: #64748b;">This link is active for 24 hours. The file is also attached to this email for your convenience.</p>
         </div>
 
         <div style="border-top: 1px solid #1e293b; padding-top: 20px; margin-top: 8px;">
           <p style="font-size: 13px; color: #64748b;">Order ID: <span style="color: #94a3b8;">${razorpay_order_id}</span></p>
           <p style="font-size: 13px; color: #64748b;">Payment ID: <span style="color: #94a3b8;">${razorpay_payment_id}</span></p>
-          <p style="font-size: 13px; color: #64748b; margin: 0;">If your download link has expired, simply reply to this email and we'll send you a fresh one.</p>
+          <p style="font-size: 13px; color: #64748b; margin: 0;">Need any help? Just reply directly to this email at <a href="mailto:buddytezzai@gmail.com" style="color: #60a5fa;">buddytezzai@gmail.com</a>.</p>
         </div>
       </div>
       <div style="background: #0f172a; padding: 16px 24px; text-align: center;">
@@ -115,14 +156,20 @@ export default async function handler(req, res) {
   `;
 
   try {
-    // Send buyer delivery email
-    await transporter.sendMail({
+    const buyerMailOptions = {
       from: `"Buddy Tezz AI" <buddytezzai@gmail.com>`,
       to: buyerEmail,
       subject: `🎉 Your Download Link — ${product.name}`,
       html: buyerHtml,
-      text: `Hi ${buyerName}, your payment was successful! Download your product here: ${downloadUrl} (link expires in 24 hours). Order ID: ${razorpay_order_id}`,
-    });
+      text: `Hi ${buyerName}, your payment was successful! Download your product here: ${downloadUrl}. Order ID: ${razorpay_order_id}`,
+    };
+
+    if (fileAttachment) {
+      buyerMailOptions.attachments = [fileAttachment];
+    }
+
+    // Send buyer delivery email
+    await transporter.sendMail(buyerMailOptions);
 
     // Send admin notification
     await transporter.sendMail({
