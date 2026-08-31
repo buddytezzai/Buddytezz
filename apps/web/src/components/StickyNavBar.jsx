@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ShoppingBag } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import SocialLinks from '@/components/SocialLinks.jsx';
 
 const StickyNavBar = () => {
@@ -15,6 +15,7 @@ const StickyNavBar = () => {
     { label: 'Services', href: '#services' },
     { label: 'Results', href: '#results' },
     { label: 'ROI Calculator', href: '#roi-calculator' },
+    { label: 'Digital Products', href: '/digital-products', highlight: true },
     { label: 'About', href: '/about' },
     { label: 'Contact', href: '#contact' }
   ];
@@ -84,18 +85,30 @@ const StickyNavBar = () => {
           </motion.button>
 
           <div className="hidden md:flex items-center space-x-8" role="menubar">
-            {menuItems.map((item, index) => (
-              <motion.button
-                key={item.href}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                onClick={() => scrollToSection(item.href)}
-                className="text-[hsl(var(--foreground))] hover:text-[hsl(var(--primary))] font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))] rounded px-2 py-1"
-                role="menuitem"
-              >
-                {item.label}
-              </motion.button>
+              {menuItems.map((item, index) => (
+              item.highlight ? (
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold bg-[hsl(var(--primary))/0.15] text-[hsl(var(--primary))] border border-[hsl(var(--primary))/0.3] hover:bg-[hsl(var(--primary))/0.25] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))]"
+                >
+                  <ShoppingBag className="w-3.5 h-3.5" aria-hidden="true" />
+                  {item.label}
+                </Link>
+              ) : (
+                <motion.button
+                  key={item.href}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  onClick={() => scrollToSection(item.href)}
+                  className="text-[hsl(var(--foreground))] hover:text-[hsl(var(--primary))] font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))] rounded px-2 py-1"
+                  role="menuitem"
+                >
+                  {item.label}
+                </motion.button>
+              )
             ))}
             <div className="h-8 w-px bg-white/10 mx-2" />
             <SocialLinks iconSize={18} />

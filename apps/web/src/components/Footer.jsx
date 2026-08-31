@@ -17,6 +17,7 @@ const Footer = () => {
     { label: 'Services', href: '#services' },
     { label: 'Results', href: '#results' },
     { label: 'ROI Calculator', href: '#roi-calculator' },
+    { label: 'Digital Products', href: '/digital-products' },
     { label: 'About', href: '/about' },
     { label: 'Contact', href: '#contact' }
   ];

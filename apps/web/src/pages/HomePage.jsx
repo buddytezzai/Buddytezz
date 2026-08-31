@@ -15,6 +15,7 @@ import Footer from '@/components/Footer.jsx';
 import { Toaster } from '@/components/ui/sonner';
 import { Zap, Share2, FileText, Globe, Palette, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import DigitalProductSection from '@/components/DigitalProductSection.jsx';
 
 const HomePage = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -124,6 +125,8 @@ const HomePage = () => {
             </div>
           </div>
         </section>
+
+        <DigitalProductSection />
 
         <section id="results" className="py-20 md:py-24 bg-gradient-to-b from-[hsl(var(--background))] to-[hsl(var(--muted))]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
