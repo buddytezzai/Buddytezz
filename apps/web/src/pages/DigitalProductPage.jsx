@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   CheckCircle2, Star, Shield, Zap, TrendingUp, BookOpen, Users,
   Target, Clock, Download, ArrowRight, Lock, Mail, Sparkles, ChevronDown
@@ -58,6 +58,15 @@ const faqs = [
 const DigitalProductPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState(null);
+  const [showMobileStickyBar, setShowMobileStickyBar] = useState(false);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setShowMobileStickyBar(window.scrollY > 350);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <>
@@ -106,7 +115,7 @@ const DigitalProductPage = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
-                  className="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight mb-5"
+                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight mb-5"
                   style={{ letterSpacing: '-0.02em' }}
                 >
                   Personal Budget{' '}
@@ -119,7 +128,7 @@ const DigitalProductPage = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
-                  className="text-lg md:text-xl text-[hsl(var(--muted-foreground))] leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0"
+                  className="text-base sm:text-lg md:text-xl text-[hsl(var(--muted-foreground))] leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0"
                 >
                   {PRODUCT.tagline}
                 </motion.p>
@@ -129,7 +138,7 @@ const DigitalProductPage = () => {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.35 }}
-                  className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mb-8 text-sm text-[hsl(var(--muted-foreground))]"
+                  className="flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4 mb-8 text-xs sm:text-sm text-[hsl(var(--muted-foreground))]"
                 >
                   <div className="flex items-center gap-1">
                     {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" aria-hidden="true" />)}
@@ -149,7 +158,7 @@ const DigitalProductPage = () => {
                   className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4"
                 >
                   <div className="text-center lg:text-left">
-                    <div className="flex items-baseline gap-3">
+                    <div className="flex items-baseline justify-center lg:justify-start gap-3">
                       <span className="text-4xl font-black text-white">{PRODUCT.priceINR}</span>
                       <span className="text-lg text-[hsl(var(--muted-foreground))]">{PRODUCT.priceUSD}</span>
                       <span className="text-base text-[hsl(var(--muted-foreground))] line-through">{PRODUCT.originalPriceINR}</span>
@@ -159,7 +168,7 @@ const DigitalProductPage = () => {
 
                   <Button
                     onClick={() => setIsModalOpen(true)}
-                    className="glow-button text-white font-bold px-8 py-6 text-lg rounded-xl group flex-shrink-0"
+                    className="w-full sm:w-auto glow-button text-white font-bold px-8 py-6 text-lg rounded-xl group flex-shrink-0"
                     id="hero-buy-btn"
                     aria-label="Buy Personal Budget Tracker Template"
                   >
@@ -174,8 +183,8 @@ const DigitalProductPage = () => {
                   transition={{ delay: 0.5 }}
                   className="mt-4 flex items-center justify-center lg:justify-start gap-2 text-xs text-[hsl(var(--muted-foreground))]"
                 >
-                  <Shield className="w-3.5 h-3.5 text-green-400" aria-hidden="true" />
-                  <span>Secured by Razorpay · Download link sent to your email instantly</span>
+                  <Shield className="w-3.5 h-3.5 text-green-400 flex-shrink-0" aria-hidden="true" />
+                  <span>Secured by Razorpay · Instant email delivery</span>
                 </motion.div>
               </motion.div>
 
@@ -184,37 +193,37 @@ const DigitalProductPage = () => {
                 initial={{ opacity: 0, x: 30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.7, delay: 0.2 }}
-                className="relative flex items-center justify-center"
+                className="relative flex items-center justify-center mt-6 lg:mt-0 px-2 sm:px-0"
               >
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
-                  <div className="w-80 h-80 bg-[hsl(var(--primary))/0.15] rounded-full blur-3xl" />
+                  <div className="w-64 sm:w-80 h-64 sm:h-80 bg-[hsl(var(--primary))/0.15] rounded-full blur-3xl" />
                 </div>
                 <motion.div
-                  className="relative"
-                  animate={{ y: [0, -12, 0] }}
+                  className="relative w-full max-w-sm sm:max-w-md lg:max-w-lg"
+                  animate={{ y: [0, -10, 0] }}
                   transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
                 >
                   {/* Glow ring */}
                   <div
                     className="absolute inset-0 rounded-3xl"
-                    style={{ boxShadow: '0 0 80px hsl(217 91% 60% / 0.3), 0 0 160px hsl(217 91% 60% / 0.15)' }}
+                    style={{ boxShadow: '0 0 60px hsl(217 91% 60% / 0.25), 0 0 120px hsl(217 91% 60% / 0.1)' }}
                     aria-hidden="true"
                   />
                   <img
                     src="/images/product-mockup.jpg"
-                    alt="AI Business Automation Playbook — digital product mockup"
-                    className="relative z-10 w-full max-w-lg rounded-3xl shadow-2xl"
-                    style={{ boxShadow: '0 30px 80px rgba(0,0,0,0.6)' }}
+                    alt="Personal Budget Tracker Template — digital product mockup"
+                    className="relative z-10 w-full rounded-2xl sm:rounded-3xl shadow-2xl"
+                    style={{ boxShadow: '0 20px 60px rgba(0,0,0,0.6)' }}
                   />
                   {/* Lock badge */}
-                  <div className="absolute -bottom-4 -left-4 glass-card border-glow rounded-2xl px-4 py-3 flex items-center gap-2 shadow-xl z-20">
-                    <Lock className="w-4 h-4 text-[hsl(var(--primary))]" aria-hidden="true" />
-                    <span className="text-sm font-semibold text-white">Gated · Purchase to unlock</span>
+                  <div className="absolute -bottom-3 sm:-bottom-4 left-2 sm:-left-4 glass-card border-glow rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2 sm:py-3 flex items-center gap-1.5 sm:gap-2 shadow-xl z-20">
+                    <Lock className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-[hsl(var(--primary))]" aria-hidden="true" />
+                    <span className="text-xs sm:text-sm font-semibold text-white">Gated · Instant Access</span>
                   </div>
                   {/* Instant tag */}
-                  <div className="absolute -top-4 -right-4 glass-card border border-green-500/30 rounded-2xl px-4 py-3 flex items-center gap-2 shadow-xl z-20">
-                    <Mail className="w-4 h-4 text-green-400" aria-hidden="true" />
-                    <span className="text-sm font-semibold text-white">Delivered via Email</span>
+                  <div className="absolute -top-3 sm:-top-4 right-2 sm:-right-4 glass-card border border-green-500/30 rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2 sm:py-3 flex items-center gap-1.5 sm:gap-2 shadow-xl z-20">
+                    <Mail className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-green-400" aria-hidden="true" />
+                    <span className="text-xs sm:text-sm font-semibold text-white">Delivered via Email</span>
                   </div>
                 </motion.div>
               </motion.div>
@@ -232,8 +241,8 @@ const DigitalProductPage = () => {
               className="text-center mb-14"
             >
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">What's Inside</h2>
-              <p className="text-[hsl(var(--muted-foreground))] text-lg max-w-2xl mx-auto">
-                Everything you need to build an AI-powered business — in one place.
+              <p className="text-[hsl(var(--muted-foreground))] text-base sm:text-lg max-w-2xl mx-auto">
+                Everything you need to master your personal finances, savings, and investments — in one place.
               </p>
             </motion.div>
 
@@ -510,6 +519,36 @@ const DigitalProductPage = () => {
 
         <Footer />
       </div>
+
+      {/* Mobile Sticky Bottom CTA Bar */}
+      <AnimatePresence>
+        {showMobileStickyBar && (
+          <motion.div
+            initial={{ y: 80, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 80, opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="fixed bottom-0 left-0 right-0 z-30 p-3 bg-[#0a0f1e]/95 backdrop-blur-lg border-t border-white/10 md:hidden flex items-center justify-between gap-3 shadow-[0_-10px_30px_rgba(0,0,0,0.5)]"
+          >
+            <div>
+              <div className="flex items-center gap-1.5">
+                <span className="text-base font-black text-white">{PRODUCT.priceINR}</span>
+                <span className="text-xs text-[hsl(var(--muted-foreground))] line-through">{PRODUCT.originalPriceINR}</span>
+                <span className="text-[10px] font-bold text-green-400 bg-green-500/20 px-1.5 py-0.5 rounded border border-green-500/30">80% OFF</span>
+              </div>
+              <p className="text-[11px] text-[hsl(var(--muted-foreground))] truncate max-w-[170px]">Personal Budget Tracker</p>
+            </div>
+            <Button
+              onClick={() => setIsModalOpen(true)}
+              className="glow-button text-white font-bold px-5 py-2 text-sm rounded-xl flex-shrink-0 flex items-center gap-1"
+              aria-label="Buy now on mobile"
+            >
+              Get Now — {PRODUCT.priceINR}
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Checkout Modal */}
       <ProductCheckoutModal

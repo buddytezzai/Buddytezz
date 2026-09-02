@@ -114,14 +114,26 @@ const StickyNavBar = () => {
             <SocialLinks iconSize={18} />
           </div>
 
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden text-[hsl(var(--foreground))] p-2 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))] rounded-lg"
-            aria-expanded={isMobileMenuOpen}
-            aria-label="Toggle mobile menu"
-          >
-            {isMobileMenuOpen ? <X size={28} aria-hidden="true" /> : <Menu size={28} aria-hidden="true" />}
-          </button>
+          {/* Mobile Right: Direct CTA & Hamburger */}
+          <div className="flex items-center gap-2 md:hidden">
+            <Link
+              to="/digital-products"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--accent))] text-white shadow-md shadow-[hsl(var(--primary))/0.3] hover:opacity-90 active:scale-95 transition-all"
+            >
+              <ShoppingBag className="w-3.5 h-3.5" aria-hidden="true" />
+              <span>Digital Store</span>
+            </Link>
+
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="text-[hsl(var(--foreground))] p-2 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))] rounded-lg"
+              aria-expanded={isMobileMenuOpen}
+              aria-label="Toggle mobile menu"
+            >
+              {isMobileMenuOpen ? <X size={26} aria-hidden="true" /> : <Menu size={26} aria-hidden="true" />}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -133,18 +145,36 @@ const StickyNavBar = () => {
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden glass-card border-t border-[hsl(var(--border))]"
           >
-            <div className="px-4 py-4 space-y-3" role="menu">
+            <div className="px-4 py-4 space-y-2" role="menu">
               {menuItems.map((item) => (
-                <button
-                  key={item.href}
-                  onClick={() => scrollToSection(item.href)}
-                  className="block w-full text-left text-[hsl(var(--foreground))] hover:text-[hsl(var(--primary))] font-medium py-3 text-lg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))] rounded px-2"
-                  role="menuitem"
-                >
-                  {item.label}
-                </button>
+                item.highlight ? (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex items-center justify-between w-full bg-[hsl(var(--primary))/0.15] border border-[hsl(var(--primary))/0.3] text-[hsl(var(--primary))] font-bold py-3.5 px-4 rounded-xl text-base transition-colors"
+                    role="menuitem"
+                  >
+                    <span className="flex items-center gap-2.5">
+                      <ShoppingBag className="w-4 h-4" aria-hidden="true" />
+                      {item.label}
+                    </span>
+                    <span className="text-xs bg-green-500/20 text-green-400 font-bold px-2 py-0.5 rounded-full border border-green-500/30">
+                      ₹99 · 80% OFF
+                    </span>
+                  </Link>
+                ) : (
+                  <button
+                    key={item.href}
+                    onClick={() => scrollToSection(item.href)}
+                    className="block w-full text-left text-[hsl(var(--foreground))] hover:text-[hsl(var(--primary))] font-medium py-3 text-lg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))] rounded px-2"
+                    role="menuitem"
+                  >
+                    {item.label}
+                  </button>
+                )
               ))}
-              <div className="pt-6 border-t border-white/10 flex justify-center">
+              <div className="pt-4 border-t border-white/10 flex justify-center">
                 <SocialLinks iconSize={20} />
               </div>
             </div>
