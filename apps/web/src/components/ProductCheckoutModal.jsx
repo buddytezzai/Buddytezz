@@ -318,7 +318,7 @@ const ProductCheckoutModal = ({ isOpen, onClose, productName, priceINR, priceUSD
                             type="text"
                             value={formData.name}
                             onChange={(e) => setFormData(p => ({ ...p, name: e.target.value }))}
-                            placeholder="Tejendra Badiwal"
+                            placeholder="User Name"
                             className="pl-10 bg-[hsl(var(--muted))] border-[hsl(var(--border))] text-white placeholder:text-[hsl(var(--muted-foreground))] focus-visible:ring-[hsl(var(--primary))]"
                             required
                             aria-required="true"
