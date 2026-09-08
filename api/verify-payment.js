@@ -185,12 +185,27 @@ export default async function handler(req, res) {
         html: adminHtml,
       });
 
-      return res.status(200).json({ message: 'Payment verified and email sent successfully.' });
+      return res.status(200).json({
+        success: true,
+        message: 'Payment verified and email sent successfully.',
+        downloadUrl,
+        orderId: razorpay_order_id,
+        paymentId: razorpay_payment_id,
+        productName: product.name,
+        buyerEmail,
+        buyerName,
+      });
     } catch (emailError) {
       console.error('Email delivery failed after verified payment:', emailError);
       return res.status(200).json({
+        success: true,
         message: 'Payment verified. Email delivery encountered a delay — please check your inbox shortly or contact buddytezzai@gmail.com.',
+        downloadUrl,
+        orderId: razorpay_order_id,
         paymentId: razorpay_payment_id,
+        productName: product.name,
+        buyerEmail,
+        buyerName,
       });
     }
   } catch (err) {

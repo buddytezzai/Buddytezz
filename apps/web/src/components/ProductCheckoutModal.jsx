@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, User, Mail, Shield, Loader2, AlertCircle, CheckCircle2, KeyRound, ArrowRight, Edit2, RotateCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -21,6 +22,7 @@ function loadRazorpayScript() {
 const PRODUCT_ID = 'ai-automation-playbook';
 
 const ProductCheckoutModal = ({ isOpen, onClose, productName, priceINR, priceUSD }) => {
+  const navigate = useNavigate();
   const [step, setStep] = useState('form'); // 'form' | 'otp' | 'paying' | 'success' | 'error'
   const [formData, setFormData] = useState({ name: '', email: '' });
   const [otp, setOtp] = useState('');
@@ -211,7 +213,29 @@ const ProductCheckoutModal = ({ isOpen, onClose, productName, priceINR, priceUSD
                 throw new Error(verifyData.message || 'Payment signature verification failed.');
               }
 
-              setStep('success');
+              // Close the modal and redirect to dedicated Order Success checkout page
+              onClose();
+              const orderSuccessParams = new URLSearchParams({
+                payment_id: response.razorpay_payment_id || '',
+                order_id: response.razorpay_order_id || '',
+                email: formData.email.trim(),
+                name: formData.name.trim(),
+                product: productName || 'Personal Budget Tracker Template',
+                download_url: verifyData.downloadUrl || '',
+              }).toString();
+
+              navigate(`/order-success?${orderSuccessParams}`, {
+                state: {
+                  orderId: response.razorpay_order_id,
+                  paymentId: response.razorpay_payment_id,
+                  email: formData.email.trim(),
+                  name: formData.name.trim(),
+                  productName: productName || 'Personal Budget Tracker Template',
+                  downloadUrl: verifyData.downloadUrl || '',
+                  amount: 99,
+                },
+              });
+
               resolve();
             } catch (err) {
               setStep('error');
@@ -239,7 +263,7 @@ const ProductCheckoutModal = ({ isOpen, onClose, productName, priceINR, priceUSD
         setIsLoading(false);
       }
     }
-  }, [formData, productName]);
+  }, [formData, productName, navigate, onClose]);
 
   return (
     <AnimatePresence>

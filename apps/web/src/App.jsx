@@ -13,6 +13,7 @@ import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage.jsx';
 import TermsOfServicePage from '@/pages/TermsOfServicePage.jsx';
 import AboutPage from '@/pages/AboutPage.jsx';
 import DigitalProductPage from '@/pages/DigitalProductPage.jsx';
+import OrderSuccessPage from '@/pages/OrderSuccessPage.jsx';
 import { RegionProvider } from '@/contexts/RegionContext.jsx';
 import { Toaster } from '@/components/ui/toaster.jsx';
 import SmoothScroll from '@/components/SmoothScroll.jsx';
@@ -36,6 +37,9 @@ function App() {
               <Route path="/terms-of-service" element={<TermsOfServicePage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/digital-products" element={<DigitalProductPage />} />
+              <Route path="/order-success" element={<OrderSuccessPage />} />
+              <Route path="/checkout/success" element={<OrderSuccessPage />} />
+              <Route path="/digital-products/success" element={<OrderSuccessPage />} />
               <Route path="*" element={<HomePage />} />
             </Routes>
             <Toaster />
