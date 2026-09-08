@@ -520,36 +520,6 @@ const DigitalProductPage = () => {
         <Footer />
       </div>
 
-      {/* Mobile Sticky Bottom CTA Bar */}
-      <AnimatePresence>
-        {showMobileStickyBar && (
-          <motion.div
-            initial={{ y: 80, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 80, opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="fixed bottom-0 left-0 right-0 z-30 p-3 bg-[#0a0f1e]/95 backdrop-blur-lg border-t border-white/10 md:hidden flex items-center justify-between gap-3 shadow-[0_-10px_30px_rgba(0,0,0,0.5)]"
-          >
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-base font-black text-white">{PRODUCT.priceINR}</span>
-                <span className="text-xs text-[hsl(var(--muted-foreground))] line-through">{PRODUCT.originalPriceINR}</span>
-                <span className="text-[10px] font-bold text-green-400 bg-green-500/20 px-1.5 py-0.5 rounded border border-green-500/30">80% OFF</span>
-              </div>
-              <p className="text-[11px] text-[hsl(var(--muted-foreground))] truncate max-w-[170px]">Personal Budget Tracker</p>
-            </div>
-            <Button
-              onClick={() => setIsModalOpen(true)}
-              className="glow-button text-white font-bold px-5 py-2 text-sm rounded-xl flex-shrink-0 flex items-center gap-1"
-              aria-label="Buy now on mobile"
-            >
-              Get Now — {PRODUCT.priceINR}
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* Checkout Modal */}
       <ProductCheckoutModal
         isOpen={isModalOpen}
